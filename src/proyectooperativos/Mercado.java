@@ -5,29 +5,24 @@
  */
 package proyectooperativos;
 
+import java.util.ArrayList;
 
 /**
  *
  * @author Felix Castillo
  */
 public class Mercado {
-    private Producto[] estante; // puede ser una lista no se
+    public static volatile ArrayList<Estante> estantes = new ArrayList<Estante>(); // puede ser una lista no se
     private int carrito; // semaforo
     private int cajaRegistradora; //semaforo
-    private Producto producto; // dudo de esto
     // Si lleva numero maximo ha que colocarlo
 
-    public Producto[] getEstante() {
-        return estante;
+    public ArrayList<Estante> getEstantes() {
+        return estantes;
     }
 
     public int getCajaRegistradora() {
         return cajaRegistradora;
-    }
-
-
-    public Producto getProducto() {
-        return producto;
     }
 
     public void crearCarrito(int a) {
