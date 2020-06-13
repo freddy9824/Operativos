@@ -48,7 +48,7 @@ public class Cliente extends Thread {
                     tomarCarrito();
                     Thread.sleep(1000);
                     
-                    for(int i = 0; i < App.estantesDisponibles; i++){
+                    for(int i = 0; i < App.estantesIniciales; i++){
                         recorrerEstante();
                         agarrarProducto(0);
                     }
