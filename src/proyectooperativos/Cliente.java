@@ -13,6 +13,7 @@ import java.util.concurrent.Semaphore;
  * @author Felix Castillo
  */
 public class Cliente extends Thread {
+    private volatile boolean termino = false;
     private int id;
     private int productos;
     private int cantidadDeProductos;
@@ -38,7 +39,7 @@ public class Cliente extends Thread {
     @Override
     public void run() {
         try {
-            while(true) {
+            while(!termino) {
 
                 
                 
@@ -162,9 +163,9 @@ public class Cliente extends Thread {
             this.sCarrito.release();
             System.out.println("El cliente #" + this.id + " ha regresado su carrito");
             /*
-                Como es un while infinito, este código se repetirá una 
-                y otra vez.
+                Termino ejecución, este cliente no volverá
             */
+            this.termino = true;
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
         }
