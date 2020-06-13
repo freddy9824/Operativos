@@ -36,26 +36,11 @@ public class App {
             sobre los hilos y cómo usarlos.
         */
         gama = new Mercado();
-        
-        Cliente[] clientes = new Cliente[5];
-        for (int i = 0; i < 5; i++) {
-            
-            clientes[i] = new Cliente(
-                i + 1,          // Su ID
-                this.sCarrito,  // El semáforo de carrito
-                this.sEstante,  // El semáforo de estante
-                this.sCajaRegistradora  // El semáforo de caja registradora
-            );
-            
-            /*
-                Al hacer clientes[i].start() comenzamos a correr el hilo.
-                Esto genera muchas confusiones porque la función que definimos
-                en Cliente se llama run() pero bueno, es lo que hay, ¿no?
-            */
-            clientes[i].start();
-        }
+
+        int id = 1;
         
         Empleado[] empleados = new Empleado[estantesDisponibles];
+        
         for (int i = 0; i < estantesDisponibles; i++) {
             
             gama.getEstantes().add(new Estante(i));
@@ -72,5 +57,18 @@ public class App {
             empleados[i].start();
         }
         
-    }   
+        while (true) {
+            try {
+                Thread.sleep(2000);
+            }catch(InterruptedException e) {
+                System.out.println("Error");
+            }
+            Cliente cliente = new Cliente(
+            id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
+            id++;
+            cliente.start();
+        }
+        
+        
+    }  
 }
