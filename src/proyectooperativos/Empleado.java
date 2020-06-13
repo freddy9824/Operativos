@@ -11,19 +11,20 @@ package proyectooperativos;
  */
 public class Empleado extends Thread{
     
+    private int cajas=3;
+    private int producto;
+    
     public void run() {
         
     }
     
     private void traerCajas() {
-        
+        System.out.println("Ire al almacen");
     }
     
-    private void llenarEstante() {
-        
+    private int llenarEstante(int producto) {
+        return cajas+producto;
     }
     
-    private void marcarHora() {
-        
-    }
+
 }
