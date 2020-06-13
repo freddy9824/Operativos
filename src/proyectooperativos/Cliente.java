@@ -36,6 +36,7 @@ public class Cliente extends Thread {
         this.sCajaRegistradora = sCajaRegistradora;
     }
     
+    @Override
     public void run() {
         try {
             while(!termino) {
