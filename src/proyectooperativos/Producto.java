@@ -5,17 +5,24 @@
  */
 package proyectooperativos;
 
+import java.util.Random;
+
 /**
  *
  * @author Felix Castillo
  */
 class Producto {
+    Random random = new Random();
     private int id;
     private int precio;
 
-    public Producto(int id, int precio) {
+    public Producto(int id) {
         this.id = id;
-        this.precio = precio;
+        /*
+            Los productos tienen un precio random entre 1 y 10 $
+        */   
+        this.precio = random.nextInt(10 - 1 + 1) + 1;
+        System.out.println("El precio del producto " + this.id  + " creado es " + this.precio);
     }
 
     public int getId() {
