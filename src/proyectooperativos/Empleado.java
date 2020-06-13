@@ -27,26 +27,37 @@ public class Empleado extends Thread{
     
     @Override
     public void run() {
-        traerCajas();
-        try {
-            sleep(5000); // 5minutos
-        }catch (InterruptedException e){
-            System.out.println("Error");
-        }
-        llenarEstante(productoEnEstante);
-        try {
-            sleep(1000); // 1 minuto
-        }catch (InterruptedException e){
-            System.out.println("Error");
+        while(true) {
+            traerCajas();
+            llenarEstante();
         }
     }
     
     private void traerCajas() {
-        System.out.println("Ire al almacen");
+        try {
+            if(App.gama.getEstantes().get(id).getProductos().size() < App.maxCantidadDeProductosPorEstantes){
+                System.out.println("Ire al almacen, soy el empleado #" + id);
+                sleep(4000); // 4 minutos
+            }
+        }catch (InterruptedException e){
+            System.out.println("Error");
+        }
     }
     
-    private int llenarEstante(int productoEnEstante) {
-        return productoEnCaja+productoEnEstante;
+    private void llenarEstante() {
+        try {
+            if(App.gama.getEstantes().get(id).getProductos().size() + 3 <= App.maxCantidadDeProductosPorEstantes){
+                System.out.println("Llenaré un estante, soy el empleado #" + id);
+                sleep(1000); // 1 minuto
+                for(int i = Mercado.estantes.get(id).getProductos().size(); i < App.maxCantidadDeProductosPorEstantes; i++){
+                    Mercado.estantes.get(id).addProducto(i);
+                }
+            }else {
+                //El empleado debe esperar a que puede insertar prodctos
+            }
+        }catch (InterruptedException e){
+            System.out.println("Error");
+        }
     }
     
 }

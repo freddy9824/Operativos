@@ -101,6 +101,13 @@ public class Cliente extends Thread {
             */   
             this.cantidadDeProductos = random.nextInt(2 - 0 + 1) + 0;
             
+            if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
+                for(int i = 0; i < cantidadDeProductos; i++){
+                    App.gama.getEstantes().get(estante).deleteProducto(i);
+                }
+                System.out.println("Se han eliminado " + cantidadDeProductos + " productos de manera exitosa");
+            }
+            
             /*
                 El valor de cantidad de producto debe ser recorrido en el array de productos y además
                 debería ser restado de la cantidad de productos en dicho estante
