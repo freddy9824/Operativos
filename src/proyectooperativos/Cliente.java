@@ -22,7 +22,7 @@ public class Cliente extends Thread {
     Semaphore sEstante;
     Semaphore sCajaRegistradora;
     
-    public Cliente(int id, Semaphore sCarrito) {
+    public Cliente(int id, Semaphore sCarrito, Semaphore sEstante, Semaphore sCajaRegistradora) {
         this.id = id;
         
         /*
@@ -31,6 +31,8 @@ public class Cliente extends Thread {
             adentro, ese semáforo será otro diferente del que creamos en App.
         */
         this.sCarrito = sCarrito;
+        this.sEstante = sEstante;
+        this.sCajaRegistradora = sCajaRegistradora;
     }
     
     public void run() {
@@ -44,9 +46,14 @@ public class Cliente extends Thread {
                 */
                     tomarCarrito();
                     Thread.sleep(1000);
-
-                    recorrerEstante();
+                    
+                    for(int i = 0; i < App.estantesDisponibles; i++){
+                        recorrerEstante();
+                        agarrarProducto(0);
+                    }
+                    
                     pagar();
+                    regresarCarrito();
 
                 /*
                     Como es un while infinito, este código se repetirá una 
@@ -65,11 +72,11 @@ public class Cliente extends Thread {
                 Ocupamos estante
             */
             sEstante.acquire();
-            
+            System.out.println("El cliente #" + this.id + " está recorriendo un estante");
             /*
                 5 min para recorrer un estante
             */
-            Thread.sleep(300000);
+            Thread.sleep(300);
 
             /*
                 Como es un while infinito, este código se repetirá una 
@@ -83,18 +90,22 @@ public class Cliente extends Thread {
     private void agarrarProducto(int estante) {
         try {
 
+            System.out.println("El cliente #" + this.id + " está agarrando productos");   
             /*
                 1 min para agarrar algo del estante
             */
-            Thread.sleep(100000);
+            Thread.sleep(1000);
             
+            /*
+                Un cliente solo agarra entre 0 a 2 productos
+            */   
             this.cantidadDeProductos = random.nextInt(2 - 0 + 1) + 0;
             
             /*
                 El valor de cantidad de producto debe ser recorrido en el array de productos y además
                 debería ser restado de la cantidad de productos en dicho estante
             */
-            System.out.println("El cliente agarró " + cantidadDeProductos + " productos");
+            System.out.println("El cliente #" + this.id + " agarró " + cantidadDeProductos + " productos");
             
             /*
                 Soltamos estante
@@ -112,14 +123,17 @@ public class Cliente extends Thread {
     
     private void pagar() {
         try {
-
+            sCajaRegistradora.acquire();
+            System.out.println("El cliente #" + this.id + " está pagando sus productos");
             /*
                 0.5 segundos para agarrar algo del carrito y ponerlo en el mostrador para pagarlo
             */
             for(int i = 0; i < this.cantidadDeProductos; i++){
                 Thread.sleep(500);
-                System.out.println("El cliente #" + this.id + " está colocó en el mostrador su producto #" + i);
+                System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (i + 1) );
             }
+            
+            sCajaRegistradora.release();
 
             /*
                 Como es un while infinito, este código se repetirá una 
@@ -136,8 +150,9 @@ public class Cliente extends Thread {
             /*
                 2 min para regresar carrito a su lugar
             */
-            Thread.sleep(120000);
-
+            Thread.sleep(1200);
+            this.sCarrito.release();
+            System.out.println("El cliente #" + this.id + " ha regresado su carrito");
             /*
                 Como es un while infinito, este código se repetirá una 
                 y otra vez.
@@ -154,6 +169,7 @@ public class Cliente extends Thread {
                 Se toma carrito de manera inmediata IGNORAR EL TIEMPO DE ABAJO
             */
             this.sCarrito.acquire();
+            System.out.println("El cliente #" + this.id + " ha tomando un carrito");
 
             /*
                 Como es un while infinito, este código se repetirá una 
