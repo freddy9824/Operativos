@@ -6,12 +6,16 @@
 package proyectooperativos;
 
 import java.util.concurrent.Semaphore;
+import javax.swing.CellEditor;
 
 /**
  *
  * @author Sagasjan
  */
 public class App {
+    int cantCarritos = 1;
+    int cantEstantes=1;
+    int cantCajaRegistradora=4;
     Semaphore sCarrito;
     Semaphore sEstante;
     Semaphore sCajaRegistradora;
@@ -22,12 +26,41 @@ public class App {
         /*
             Creación de semáforos
         */
-        this.sCarrito = new Semaphore(1);
-        this.sEstante = new Semaphore(1);
-        this.sCajaRegistradora = new Semaphore(1);
+        this.sCarrito = new Semaphore(this.cantCarritos);
+        this.sEstante = new Semaphore(this.cantEstantes);
+        this.sCajaRegistradora = new Semaphore(this.cantCajaRegistradora);
     }
+
+    public int getCantCarritos() {
+        return cantCarritos;
+    }
+
+    public void setCantCarritos(int cantCarritos) {
+        this.cantCarritos = cantCarritos;
+    }
+
+    public int getCantEstantes() {
+        return cantEstantes;
+    }
+
+    public void setCantEstantes(int cantEstantes) {
+        this.cantEstantes = cantEstantes;
+    }
+
+    public int getCantCajaRegistradora() {
+        return cantCajaRegistradora;
+    }
+
+    public void setCantCajaRegistradora(int cantCajRegistradora) {
+        this.cantCajaRegistradora = cantCajRegistradora;
+    }
+
+    
+
+
      
-     public void iniciar() {
+     
+     public void iniciar(javax.swing.JTextField a) {
         
         /*
             Vamos a crear unos cuantos clientes, ve a Clientes para saber
@@ -44,6 +77,9 @@ public class App {
             id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
             id++;
             cliente.start();
+            String b = Integer.toString(id);
+            a.setText(b);
+            
         }
             /*
                 Al hacer clientes[i].start() comenzamos a correr el hilo.
