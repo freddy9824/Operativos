@@ -26,7 +26,6 @@ public class CajaRegistradora extends Thread{
     }
     
     
-    
     @Override
     public void run() {
         leerProducto(producto);
