@@ -54,11 +54,10 @@ public class App {
     }
 
     public int getCantCarritos() {
-        return carritosIniciales;
+        return carritosDisponibles;
     }
 
     public void setCantCarritos(int cantCarritos) {
-        App.carritosIniciales = App.carritosIniciales + cantCarritos;
         this.sCarrito.release(cantCarritos);
         App.carritosDisponibles = this.sCarrito.availablePermits();
     }
