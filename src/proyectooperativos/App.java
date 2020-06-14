@@ -136,7 +136,7 @@ public class App {
                         if(App.clientesEnColaParaEntrar.size() > 0) {
                             App.clientesEnColaParaEntrar.remove(0).start();
                         } else {
-                            System.out.println("Adquiriendo Carrito el cliente #" + id);
+                            System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             Cliente cliente = new Cliente(
                             id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
                             id++;
