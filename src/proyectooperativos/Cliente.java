@@ -183,6 +183,7 @@ public class Cliente extends Thread {
             */
             Thread.sleep(1200);
             this.sCarrito.release();
+            App.carritosDisponibles = this.sCarrito.availablePermits();
             System.out.println("El cliente #" + this.id + " ha regresado su carrito");
             /*
                 Termino ejecución, este cliente no volverá
