@@ -15,17 +15,18 @@ import java.util.concurrent.Semaphore;
  */
 public class Cliente extends Thread {
     private volatile boolean termino = false;
-    private int id;
-    private ArrayList<Producto> productos = new ArrayList<Producto>();
+    public volatile boolean atendido = false;
+    public volatile boolean pago = false;
+    public int id;
+    public ArrayList<Producto> productos = new ArrayList<Producto>();
     private int cantidadDeProductos;
     private int tiempo;
     Random random = new Random();
     
     Semaphore sCarrito;
     Semaphore sEstante;
-    Semaphore sCajaRegistradora;
     
-    public Cliente(int id, Semaphore sCarrito, Semaphore sEstante, Semaphore sCajaRegistradora) {
+    public Cliente(int id, Semaphore sCarrito, Semaphore sEstante) {
         this.id = id;
         
         /*
@@ -35,7 +36,6 @@ public class Cliente extends Thread {
         */
         this.sCarrito = sCarrito;
         this.sEstante = sEstante;
-        this.sCajaRegistradora = sCajaRegistradora;
     }
     
     @Override
@@ -132,8 +132,21 @@ public class Cliente extends Thread {
     
     private void pagar() {
         try {
-            Thread.sleep(500);
-            //App.clientesEnColaParaPagar.add(this);
+            //Thread.sleep(500);
+            System.out.println("El cliente #" + this.id + " entró en la cola para pagar" );
+            App.clientesEnColaParaPagar.add(this);
+            while(!atendido){
+                Thread.sleep(1000);
+            }
+            int indexProductos = 0;
+            for(Producto producto : this.productos) {
+                Thread.sleep(500);
+                System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
+                indexProductos++;
+            }
+            while(!pago){
+                Thread.sleep(1000);
+            }
 //            if(sCajaRegistradora.tryAcquire()){
 //                /*
 //                    0.5 segundos para agarrar algo del carrito y ponerlo en el mostrador para pagarlo

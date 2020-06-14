@@ -17,11 +17,9 @@ public class Empleado extends Thread{
     private int productoEnCaja=3;
     private int productoEnEstante;
     private int tiempo;
-    Semaphore sCajaRegistradora;
 
-    public Empleado(int id, Semaphore sCajaRegistradora) {
+    public Empleado(int id) {
         this.id = id;
-        this.sCajaRegistradora = new Semaphore(App.cajasRegistradorasIniciales);
     }
 
     public void setProductoEnEstante(int productoEnEstante) {
@@ -33,22 +31,11 @@ public class Empleado extends Thread{
     @Override
     public void run() {
         while(true) {
-            atenderPago();
             traerCajas();
             llenarEstante();
         }
     }
-    
-    private void atenderPago() {
-        try {
-            if(sCajaRegistradora.tryAcquire()){
-                System.out.println("Ire a atender pago, soy el empleado #" + id);
-                sleep(4000); // 4 minutos
-            }
-        }catch (InterruptedException e){
-            System.out.println("Error");
-        }
-    }
+   
     
     private void traerCajas() {
         try {

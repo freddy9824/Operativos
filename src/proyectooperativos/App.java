@@ -23,7 +23,6 @@ public class App {
     int cantCajaRegistradora=4;
     Semaphore sCarrito;
     Semaphore sEstante;
-    Semaphore sCajaRegistradora;
     public static int maxCantidadDeEstantes;
     public static int estantesIniciales = 1;
     public static int maxCantidadDeProductosPorEstantes = 10;
@@ -34,6 +33,7 @@ public class App {
     public static int maxCantidadDeCarritos;
     public static int carritosDisponibles;
     public static int nroClientesEnColaParaEntrar = 0;
+    public static int nroClientesEnColaParaPagar = 0;
     public static Mercado gama;
     javax.swing.JTextField estantes;
     javax.swing.JTextField cajeros;
@@ -42,6 +42,7 @@ public class App {
     public static volatile boolean iniciar = false;
     public static volatile ArrayList<Cliente> clientesEnColaParaEntrar;
     public static volatile ArrayList<Cliente> clientesEnColaParaPagar;
+    public static volatile ArrayList<CajaRegistradora> cajaRegistradora;
     public static volatile ArrayList<Mostrador> mostradores;
     
      public App() {
@@ -50,7 +51,6 @@ public class App {
         */
         this.sCarrito = new Semaphore(App.carritosIniciales);
         this.sEstante = new Semaphore(this.cantEstantes);
-        this.sCajaRegistradora = new Semaphore(this.cantCajaRegistradora);
     }
 
     public int getCantCarritos() {
@@ -107,8 +107,7 @@ public class App {
                 gama.getEstantes().add(new Estante(i));
 
                 empleados[i] = new Empleado(
-                    i,          // Su ID
-                    this.sCajaRegistradora
+                    i          // Su ID
                 );
 
                 /*
@@ -120,11 +119,14 @@ public class App {
             }
             
             
+            CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
             
             for (int i = 0; i < cajasRegistradorasIniciales; i++) {
-                mostradores.add(new Mostrador(
+                cajaRegistradoras[i] = new CajaRegistradora(
                     i          // Su ID
-                ));
+                );
+                
+                cajaRegistradoras[i].start();
             }
 
             while (true) {
@@ -139,7 +141,7 @@ public class App {
                         } else {
                             System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             Cliente cliente = new Cliente(
-                            id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
+                            id, this.sCarrito, this.sEstante);
                             id++;
                             cliente.start();
                         }
@@ -150,7 +152,7 @@ public class App {
                         nroClientesEnColaParaEntrar++;
                         Thread.sleep(5000);
                         System.out.println("El cliente #" + id + " está esperando a ser atendido");
-                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajaRegistradora));
+                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante));
                         id++;
                     };
                 }catch(InterruptedException e) {
