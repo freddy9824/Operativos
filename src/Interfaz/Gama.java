@@ -17,6 +17,8 @@ public class Gama extends javax.swing.JFrame {
      * Creates new form Gama
      * @param app
      */
+    public App app;
+    
     public Gama(App app) {
         initComponents();
         setLocationRelativeTo(this);
@@ -25,8 +27,9 @@ public class Gama extends javax.swing.JFrame {
         jPanel1.setVisible(true);
         cerrar.setVisible(false);
         setVisible(true);
+        this.app = app;
     }
-    App app = new App();
+    //App app = new App();
     
     /**
      * This method is called from within the constructor to initialize the form.
