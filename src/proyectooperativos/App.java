@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.concurrent.Semaphore;
 import javax.swing.JOptionPane;
-import javax.swing.CellEditor;
+import javax.*;
 
 /**
  *
@@ -32,6 +32,9 @@ public class App {
     public static int carritosIniciales;
     public static int maxCantidadDeCarritos;
     public static Mercado gama;
+    javax.swing.JTextField estantes;
+    javax.swing.JTextField cajeros;
+    javax.swing.JTextField carritos;
     File archivoConfig = new File("archivoConfig.txt"); 
     public static volatile boolean iniciar = false;
     
@@ -72,7 +75,7 @@ public class App {
 
 
      
-     public void iniciar(javax.swing.JTextField a) {
+     public void iniciar() {
          
         LeerArchivo();
         
@@ -103,7 +106,10 @@ public class App {
                 */
                 empleados[i].start();
             }
-
+            String stand = Integer.toString(getCantEstantes());
+            String caja = Integer.toString(getCantCajaRegistradora());
+            String car = Integer.toString(getCantCarritos());
+            
             while (true) {
                 try {
                     Thread.sleep(2000);
@@ -114,8 +120,6 @@ public class App {
                 id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
                 id++;
                 cliente.start();
-                String b = Integer.toString(id);
-                a.setText(b);
             }
          }
          

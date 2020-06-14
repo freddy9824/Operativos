@@ -17,6 +17,7 @@ public class Cliente extends Thread {
     private int id;
     private int productos;
     private int cantidadDeProductos;
+    private int tiempo;
     Random random = new Random();
     
     Semaphore sCarrito;
@@ -188,4 +189,10 @@ public class Cliente extends Thread {
             System.out.println("El cliente no pudo tomar carrito.");
         }
     }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
+    
+    
 }

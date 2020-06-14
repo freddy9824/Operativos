@@ -15,15 +15,19 @@ public class Gama extends javax.swing.JFrame {
 
     /**
      * Creates new form Gama
+     * @param app
      */
-    public Gama() {
+    public Gama(App app) {
         initComponents();
         setLocationRelativeTo(this);
         setResizable(false);
         jPanel2.setVisible(false);
         jPanel1.setVisible(true);
+        cerrar.setVisible(false);
+        setVisible(true);
     }
     App app = new App();
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,19 +54,29 @@ public class Gama extends javax.swing.JFrame {
         estantes = new javax.swing.JTextField();
         clientesEnSistema = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        cerrar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         numeroDeCarros = new javax.swing.JTextField();
         agregarCarritos = new javax.swing.JButton();
         agregarEstante = new javax.swing.JButton();
         agregarCajaAdministradora = new javax.swing.JButton();
-        cerrar = new javax.swing.JButton();
         eliminarCarritos = new javax.swing.JButton();
         eliminarCajaRegistradora = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        cajasRegistradoras.setEditable(false);
+        cajasRegistradoras.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        cajasRegistradoras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cajasRegistradorasActionPerformed(evt);
+            }
+        });
+
+        carritosDisponibles.setEditable(false);
+        carritosDisponibles.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         carritosDisponibles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 carritosDisponiblesActionPerformed(evt);
@@ -71,8 +85,13 @@ public class Gama extends javax.swing.JFrame {
 
         jLabel2.setText("Estantes");
 
+        personasEnEspera.setEditable(false);
+        personasEnEspera.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         jLabel3.setText("Clientes en Sistema");
 
+        horasRealizadas.setEditable(false);
+        horasRealizadas.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         horasRealizadas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 horasRealizadasActionPerformed(evt);
@@ -80,6 +99,9 @@ public class Gama extends javax.swing.JFrame {
         });
 
         jLabel4.setText("Cajas Registradoras");
+
+        gananciasDia.setEditable(false);
+        gananciasDia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         jLabel5.setText("Carritos Disponibles");
 
@@ -89,6 +111,22 @@ public class Gama extends javax.swing.JFrame {
 
         jLabel8.setText("Ganancias del Día");
 
+        estantes.setEditable(false);
+        estantes.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        estantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                estantesActionPerformed(evt);
+            }
+        });
+        estantes.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                estantesVetoableChange(evt);
+            }
+        });
+
+        clientesEnSistema.setEditable(false);
+        clientesEnSistema.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         jButton1.setText("Mostrar Agregar y Eliminar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,52 +134,56 @@ public class Gama extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Gama Express");
+        cerrar.setText("Ocultar");
+        cerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cerrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 40, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(40, 40, 40))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(gananciasDia, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
+                    .addComponent(estantes)
+                    .addComponent(clientesEnSistema)
+                    .addComponent(cajasRegistradoras)
+                    .addComponent(carritosDisponibles)
+                    .addComponent(personasEnEspera)
+                    .addComponent(horasRealizadas))
+                .addGap(40, 40, 40))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(82, 82, 82)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(gananciasDia, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(estantes)
-                        .addComponent(clientesEnSistema)
-                        .addComponent(cajasRegistradoras)
-                        .addComponent(carritosDisponibles)
-                        .addComponent(personasEnEspera)
-                        .addComponent(horasRealizadas, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(57, 57, 57))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(129, 129, 129))))
+                        .addGap(154, 154, 154)
+                        .addComponent(cerrar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(jButton1)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61)
+                .addGap(0, 0, 0)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(estantes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -171,7 +213,8 @@ public class Gama extends javax.swing.JFrame {
                     .addComponent(gananciasDia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addComponent(jButton1)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cerrar))
         );
 
         numeroDeCarros.addActionListener(new java.awt.event.ActionListener() {
@@ -201,13 +244,6 @@ public class Gama extends javax.swing.JFrame {
             }
         });
 
-        cerrar.setText("Ocultar");
-        cerrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cerrarActionPerformed(evt);
-            }
-        });
-
         eliminarCarritos.setText("Eliminar Carritos");
         eliminarCarritos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,26 +262,23 @@ public class Gama extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(cerrar)
-                .addGap(152, 152, 152))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(numeroDeCarros, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(agregarCarritos))
-                            .addComponent(agregarCajaAdministradora, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(34, 34, 34)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(eliminarCarritos, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-                            .addComponent(eliminarCajaRegistradora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(agregarEstante, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(numeroDeCarros, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(agregarCarritos))
+                    .addComponent(agregarCajaAdministradora, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(eliminarCarritos, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
+                    .addComponent(eliminarCajaRegistradora, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(agregarEstante, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,9 +294,7 @@ public class Gama extends javax.swing.JFrame {
                     .addComponent(eliminarCajaRegistradora))
                 .addGap(18, 18, 18)
                 .addComponent(agregarEstante)
-                .addGap(18, 18, 18)
-                .addComponent(cerrar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jButton2.setText("Terminar Simulación");
@@ -272,6 +303,8 @@ public class Gama extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Gama Express");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -282,25 +315,28 @@ public class Gama extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(343, 343, 343)
+                        .addGap(358, 358, 358)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(318, 318, 318)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(11, 11, 11)
                 .addComponent(jButton2)
-                .addGap(19, 19, 19))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -317,6 +353,8 @@ public class Gama extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         jPanel2.setVisible(true);
+        jButton1.setVisible(false);
+        cerrar.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void agregarCarritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCarritosActionPerformed
@@ -325,24 +363,32 @@ public class Gama extends javax.swing.JFrame {
        app.setCantCarritos(a + app.getCantCarritos());
         System.out.println(a + " Carritos Agregados, ahora el la cant de carros son: " + app.getCantCarritos());
        numeroDeCarros.setText("");
+       String aux = Integer.toString(app.getCantCarritos());
+       carritosDisponibles.setText(aux);
     }//GEN-LAST:event_agregarCarritosActionPerformed
 
     private void agregarEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarEstanteActionPerformed
         // TODO add your handling code here:
         app.setCantEstantes(app.getCantEstantes() + 1);
         System.out.println("El estante numero " + app.getCantEstantes() + " Empezo a funcionar");
+        String aux = Integer.toString(app.getCantEstantes());
+        estantes.setText(aux);
     }//GEN-LAST:event_agregarEstanteActionPerformed
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
         // TODO add your handling code here:
         app.setCantCajaRegistradora(app.getCantCajaRegistradora()+1);
         System.out.println("Se contrato al cajero en la caja numero " + app.getCantCajaRegistradora());
+        String aux = Integer.toString(app.getCantCajaRegistradora());
+        cajasRegistradoras.setText(aux);
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
         // TODO add your handling code here:
         jPanel2.setVisible(false);
         jPanel1.setVisible(true);
+        jButton1.setVisible(true);
+        cerrar.setVisible(false);
     }//GEN-LAST:event_cerrarActionPerformed
 
     private void eliminarCarritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCarritosActionPerformed
@@ -356,6 +402,8 @@ public class Gama extends javax.swing.JFrame {
             System.out.println("No se pude remover mas carros de los que hay");
         }
        numeroDeCarros.setText("");
+       String aux = Integer.toString(app.getCantCarritos());
+       carritosDisponibles.setText(aux);
     }//GEN-LAST:event_eliminarCarritosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -369,14 +417,31 @@ public class Gama extends javax.swing.JFrame {
 
     private void eliminarCajaRegistradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCajaRegistradoraActionPerformed
         // TODO add your handling code here:
-        if (app.getCantCajaRegistradora()-1 > 1) {
+        if (app.getCantCajaRegistradora()-1 > 0) {
             app.setCantCajaRegistradora(app.getCantCajaRegistradora()-1);
-        System.out.println("Se retiro al cajero en la caja numero " + app.getCantCajaRegistradora());
+            System.out.println("Se retiro al cajero en la caja numero " + app.getCantCajaRegistradora());
+            String aux = Integer.toString(app.getCantCajaRegistradora());
+            cajasRegistradoras.setText(aux);
         }
         else {
             System.out.println("No se puede retirar al cajero en caja 1");
         }
     }//GEN-LAST:event_eliminarCajaRegistradoraActionPerformed
+
+    private void estantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estantesActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_estantesActionPerformed
+
+    private void estantesVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_estantesVetoableChange
+        // TODO add your handling code here:
+        String a = Integer.toString(app.getCantEstantes());
+        estantes.setText(a);
+    }//GEN-LAST:event_estantesVetoableChange
+
+    private void cajasRegistradorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cajasRegistradorasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cajasRegistradorasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -408,7 +473,7 @@ public class Gama extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Gama().setVisible(true);
+                
             }
         });
     }
@@ -423,7 +488,7 @@ public class Gama extends javax.swing.JFrame {
     private javax.swing.JTextField clientesEnSistema;
     private javax.swing.JButton eliminarCajaRegistradora;
     private javax.swing.JButton eliminarCarritos;
-    private javax.swing.JTextField estantes;
+    public javax.swing.JTextField estantes;
     private javax.swing.JTextField gananciasDia;
     private javax.swing.JTextField horasRealizadas;
     private javax.swing.JButton jButton1;

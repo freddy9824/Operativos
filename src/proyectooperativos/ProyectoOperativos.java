@@ -5,6 +5,8 @@
  */
 package proyectooperativos;
 
+import Interfaz.Gama;
+
 /**
  *
  * @author Felix Castillo
@@ -16,6 +18,7 @@ public class ProyectoOperativos {
      */
     public static void main(String[] args) {
         App app = new App();
+        Gama gama = new Gama(app);
         app.iniciar();
     }
     

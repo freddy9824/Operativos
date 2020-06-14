@@ -14,6 +14,7 @@ public class Empleado extends Thread{
     private int id;
     private int productoEnCaja=3;
     private int productoEnEstante;
+    private int tiempo;
 
     public Empleado(int id) {
         this.id = id;
@@ -58,6 +59,10 @@ public class Empleado extends Thread{
         }catch (InterruptedException e){
             System.out.println("Error");
         }
+    }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
     }
     
 }

@@ -10,8 +10,9 @@ package proyectooperativos;
  * @author Felix Castillo
  */
 public class CajaRegistradora extends Thread{
-    int producto;
-    int varGlobal;
+    private int producto;
+    private int varGlobal;
+    private int tiempo;
 
     public void setProducto(int producto) {
         this.producto = producto;
@@ -24,6 +25,11 @@ public class CajaRegistradora extends Thread{
     public int getVarGlobal() {
         return varGlobal;
     }
+
+    public void setTiempo(int tiempo) {
+        this.tiempo = tiempo;
+    }
+    
     
     
     @Override
@@ -35,7 +41,7 @@ public class CajaRegistradora extends Thread{
     private void leerProducto(int producto) {
         for (int i = 0; i < producto; i++) {
             try {
-                sleep(1000); // 1 minuto
+                sleep(tiempo * 60 / 1000); // 1 minuto
             } catch(InterruptedException e) {
                 System.out.println("Error");
             }
