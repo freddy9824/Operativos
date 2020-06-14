@@ -60,6 +60,7 @@ public class App {
     public void setCantCarritos(int cantCarritos) {
         App.carritosIniciales = App.carritosIniciales + cantCarritos;
         this.sCarrito.release(cantCarritos);
+        App.carritosDisponibles = this.sCarrito.availablePermits();
     }
 
     public int getCantEstantes() {
