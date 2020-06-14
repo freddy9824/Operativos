@@ -34,8 +34,8 @@ public class Estante {
         productos.add(new Producto(id));
     }
     
-     public void deleteProducto(int id) {
-        productos.remove(id);
+     public Producto deleteProducto(int id) {
+        return productos.remove(id);
     }
     
 }

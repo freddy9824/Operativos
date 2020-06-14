@@ -8,6 +8,7 @@ package proyectooperativos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 import javax.swing.JOptionPane;
 import javax.*;
@@ -29,7 +30,7 @@ public class App {
     public static int duracionDeHora;
     public static int cajasRegistradorasIniciales;
     public static int maxCantidadDeCajasRegistradoras;
-    public static int carritosIniciales;
+    public static int carritosIniciales = 1;
     public static int maxCantidadDeCarritos;
     public static Mercado gama;
     javax.swing.JTextField estantes;
@@ -37,12 +38,15 @@ public class App {
     javax.swing.JTextField carritos;
     File archivoConfig = new File("archivoConfig.txt"); 
     public static volatile boolean iniciar = false;
+    public static volatile ArrayList<Cliente> clientesEnColaParaEntrar;
+    public static volatile ArrayList<Cliente> clientesEnColaParaPagar;
+    public static volatile ArrayList<Mostrador> mostradores;
     
      public App() {
         /*
             Creación de semáforos
         */
-        this.sCarrito = new Semaphore(this.cantCarritos);
+        this.sCarrito = new Semaphore(App.carritosIniciales);
         this.sEstante = new Semaphore(this.cantEstantes);
         this.sCajaRegistradora = new Semaphore(this.cantCajaRegistradora);
     }
@@ -80,7 +84,9 @@ public class App {
         LeerArchivo();
         
          if(iniciar){
-             
+             clientesEnColaParaEntrar = new ArrayList<Cliente>();
+             clientesEnColaParaPagar = new ArrayList<Cliente>();
+             mostradores = new ArrayList<Mostrador>();
             /*
                 Vamos a crear unos cuantos clientes, ve a Clientes para saber
                 sobre los hilos y cómo usarlos.
@@ -96,7 +102,8 @@ public class App {
                 gama.getEstantes().add(new Estante(i));
 
                 empleados[i] = new Empleado(
-                    i          // Su ID
+                    i,          // Su ID
+                    this.sCajaRegistradora
                 );
 
                 /*
@@ -110,16 +117,45 @@ public class App {
             String caja = Integer.toString(getCantCajaRegistradora());
             String car = Integer.toString(getCantCarritos());
             
+            
+            for (int i = 0; i < cajasRegistradorasIniciales; i++) {
+                mostradores.add(new Mostrador(
+                    i          // Su ID
+                ));
+            }
+
             while (true) {
                 try {
-                    Thread.sleep(2000);
+                    if(sCarrito.tryAcquire()){
+                        //System.out.println("Adquiriendo Carrito el cliente #" + id);
+                        Thread.sleep(2000);
+                        if(App.clientesEnColaParaEntrar.size() > 0) {
+                            App.clientesEnColaParaEntrar.remove(0).start();
+                        } else {
+                            System.out.println("Adquiriendo Carrito el cliente #" + id);
+                            Cliente cliente = new Cliente(
+                            id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
+                            id++;
+                            cliente.start();
+                        }
+                    }else{
+                        /*
+                            Un cliente entra cada X tiempo
+                        */
+                        Thread.sleep(5000);
+                        System.out.println("El cliente #" + id + " está esperando a ser atendido");
+                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajaRegistradora));
+                        id++;
+                    };
                 }catch(InterruptedException e) {
                     System.out.println("Error");
                 }
-                Cliente cliente = new Cliente(
-                id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
-                id++;
-                cliente.start();
+//                Cliente cliente = new Cliente(
+//                id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
+//                id++;
+//                cliente.start();
+                //String b = Integer.toString(id);
+                //a.setText(b);
             }
          }
          

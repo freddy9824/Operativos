@@ -5,6 +5,7 @@
  */
 package proyectooperativos;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 
@@ -15,7 +16,7 @@ import java.util.concurrent.Semaphore;
 public class Cliente extends Thread {
     private volatile boolean termino = false;
     private int id;
-    private int productos;
+    private ArrayList<Producto> productos = new ArrayList<Producto>();
     private int cantidadDeProductos;
     private int tiempo;
     Random random = new Random();
@@ -41,13 +42,11 @@ public class Cliente extends Thread {
     public void run() {
         try {
             while(!termino) {
-
-                
                 
                 /*
                     El cliente llega y toma inmediatamente un carrito disponible
                 */
-                    tomarCarrito();
+                    //tomarCarrito();
                     Thread.sleep(1000);
                     
                     for(int i = 0; i < App.estantesIniciales; i++){
@@ -106,7 +105,7 @@ public class Cliente extends Thread {
             
             if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
                 for(int i = 0; i < cantidadDeProductos; i++){
-                    App.gama.getEstantes().get(estante).deleteProducto(i);
+                    this.productos.add(App.gama.getEstantes().get(estante).deleteProducto(i));
                 }
                 System.out.println("Se han eliminado " + cantidadDeProductos + " productos de manera exitosa");
             }
@@ -133,17 +132,39 @@ public class Cliente extends Thread {
     
     private void pagar() {
         try {
-            sCajaRegistradora.acquire();
-            System.out.println("El cliente #" + this.id + " está pagando sus productos");
-            /*
-                0.5 segundos para agarrar algo del carrito y ponerlo en el mostrador para pagarlo
-            */
-            for(int i = 0; i < this.cantidadDeProductos; i++){
-                Thread.sleep(500);
-                System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (i + 1) );
-            }
+            Thread.sleep(500);
+            //App.clientesEnColaParaPagar.add(this);
+//            if(sCajaRegistradora.tryAcquire()){
+//                /*
+//                    0.5 segundos para agarrar algo del carrito y ponerlo en el mostrador para pagarlo
+//                */
+//                int index = 0;
+//                for(Mostrador mostrador : App.mostradores) {
+//                    if(!mostrador.ocupado){
+//                        break;
+//                    }
+//                    index++;
+//                }
+//                
+//                App.mostradores.get(index).cliente = this;
+//                
+//                System.out.println("El cliente #" + this.id + " está pagando sus productos en el mostrador " + index);
+//                
+//                
+//                int indexProductos = 0;
+//                for(Producto producto : this.productos) {
+//                    Thread.sleep(500);
+//                    System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
+//                    indexProductos++;
+//                }     
+//                this.wait();
+//            } else {
+//                App.clientesEnColaParaPagar.add(this);
+//                this.wait();
+//                pagar();
+//            }
             
-            sCajaRegistradora.release();
+            //sCajaRegistradora.release();
 
             /*
                 Como es un while infinito, este código se repetirá una 
