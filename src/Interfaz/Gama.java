@@ -321,8 +321,8 @@ public class Gama extends javax.swing.JFrame {
                         .addGap(358, 358, 358)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(318, 318, 318)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(289, 289, 289)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -482,15 +482,15 @@ public class Gama extends javax.swing.JFrame {
     private javax.swing.JButton agregarCajaAdministradora;
     private javax.swing.JButton agregarCarritos;
     private javax.swing.JButton agregarEstante;
-    private javax.swing.JTextField cajasRegistradoras;
-    private javax.swing.JTextField carritosDisponibles;
+    public volatile javax.swing.JTextField cajasRegistradoras;
+    public volatile javax.swing.JTextField carritosDisponibles;
     private javax.swing.JButton cerrar;
-    private javax.swing.JTextField clientesEnSistema;
+    public volatile javax.swing.JTextField clientesEnSistema;
     private javax.swing.JButton eliminarCajaRegistradora;
     private javax.swing.JButton eliminarCarritos;
-    public javax.swing.JTextField estantes;
-    private javax.swing.JTextField gananciasDia;
-    private javax.swing.JTextField horasRealizadas;
+    public volatile javax.swing.JTextField estantes;
+    public volatile javax.swing.JTextField gananciasDia;
+    public volatile javax.swing.JTextField horasRealizadas;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -505,6 +505,6 @@ public class Gama extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField numeroDeCarros;
-    private javax.swing.JTextField personasEnEspera;
+    public volatile javax.swing.JTextField personasEnEspera;
     // End of variables declaration//GEN-END:variables
 }

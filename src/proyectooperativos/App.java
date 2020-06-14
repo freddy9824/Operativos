@@ -113,6 +113,7 @@ public class App {
                 */
                 empleados[i].start();
             }
+            
             String stand = Integer.toString(getCantEstantes());
             String caja = Integer.toString(getCantCajaRegistradora());
             String car = Integer.toString(getCantCarritos());
