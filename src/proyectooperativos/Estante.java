@@ -14,6 +14,8 @@ import java.util.ArrayList;
 public class Estante {
     private int id;
     private volatile ArrayList<Producto> productos = new ArrayList<Producto>();
+    public volatile boolean llenando = false;
+    public volatile boolean enUso = false;
     
     public Estante(int id) {
         this.id = id;
@@ -34,8 +36,17 @@ public class Estante {
         productos.add(new Producto(id));
     }
     
-     public Producto deleteProducto(int id) {
-        return productos.remove(id);
+     public Producto deleteProducto() {
+        return productos.remove(0);
+    }
+     
+      public Producto getProducto() {
+        return productos.get(0);
+    }
+     
+     public boolean exists(Producto producto) {
+        boolean itemExists = productos.stream().anyMatch(c -> c.equals(producto));
+        return itemExists;
     }
     
 }

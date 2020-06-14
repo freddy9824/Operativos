@@ -21,6 +21,7 @@ public class Cliente extends Thread {
     public ArrayList<Producto> productos = new ArrayList<Producto>();
     private int cantidadDeProductos;
     private int tiempo;
+    private ArrayList<Number> recorridos = new ArrayList<Number>();;
     Random random = new Random();
     
     Semaphore sCarrito;
@@ -40,30 +41,32 @@ public class Cliente extends Thread {
     
     @Override
     public void run() {
-        try {
-            while(!termino) {
-                
-                /*
-                    El cliente llega y toma inmediatamente un carrito disponible
-                */
-                    //tomarCarrito();
-                    Thread.sleep(1000);
-                    
-                    for(int i = 0; i < App.estantesIniciales; i++){
-                        recorrerEstante();
-                        agarrarProducto(0);
-                    }
-                    
-                    pagar();
-                    regresarCarrito();
+        while(!termino) {
 
-                /*
-                    Como es un while infinito, este código se repetirá una 
-                    y otra vez.
-                */
-            }
-        } catch (InterruptedException e) {
-            System.out.println("El cliente se volvió loco.");
+            /*
+                El cliente llega y toma inmediatamente un carrito disponible
+            */
+                //tomarCarrito();
+                //Thread.sleep(1000);
+                while(recorridos.size() < App.estantesDisponibles){
+                    for(int i = 0; i < App.estantesDisponibles; i++){
+                        if(!recorridos.contains(i)){
+                            recorrerEstante();
+                            if(App.gama.getEstantes().get(i).enUso == false){
+                                agarrarProducto(i);
+                                recorridos.add(i);
+                            } 
+                        }
+                    }
+                }
+
+                pagar();
+                regresarCarrito();
+
+            /*
+                Como es un while infinito, este código se repetirá una 
+                y otra vez.
+            */
         }
     }
     
@@ -80,10 +83,6 @@ public class Cliente extends Thread {
             */
             Thread.sleep(300);
 
-            /*
-                Como es un while infinito, este código se repetirá una 
-                y otra vez.
-            */
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
         }
@@ -91,40 +90,97 @@ public class Cliente extends Thread {
     
     private void agarrarProducto(int estante) {
         try {
+            if(App.gama.getEstantes().get(estante).llenando == false){
+                App.gama.getEstantes().get(estante).enUso = true;
+            
+                System.out.println("El cliente #" + this.id + " está agarrando productos del estante #" + estante);   
+                /*
+                    1 min para agarrar algo del estante
+                */
+                Thread.sleep(1000);
 
-            System.out.println("El cliente #" + this.id + " está agarrando productos");   
-            /*
-                1 min para agarrar algo del estante
-            */
-            Thread.sleep(1000);
-            
-            /*
-                Un cliente solo agarra entre 0 a 2 productos
-            */   
-            this.cantidadDeProductos = random.nextInt(2 - 0 + 1) + 0;
-            
-            if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
-                for(int i = 0; i < cantidadDeProductos; i++){
-                    this.productos.add(App.gama.getEstantes().get(estante).deleteProducto(i));
+                /*
+                    Un cliente solo agarra entre 0 a 2 productos
+                */   
+                this.cantidadDeProductos = random.nextInt(2 - 0 + 1) + 0;
+//
+//                if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
+//                    for(int i = 0; i < cantidadDeProductos; i++){
+//                        if(App.gama.getEstantes().get(estante).llenando == false){
+//                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
+//                            if(App.gama.getEstantes().get(estante).exists(producto)){
+//                                App.gama.getEstantes().get(estante).deleteProducto();
+//                                this.productos.add(producto);
+//                            } else {
+//                                System.out.println("Oh no se acabaron los productos del estante #" + estante);
+//                            }
+//                        }  else {
+//                            System.out.println("Oh no se acabaron los productos del estante #" + estante);
+//                        }
+//                    }
+//                    System.out.println("Se han eliminado " + cantidadDeProductos + " productos de manera exitosa");
+//                }
+                if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
+                    if(cantidadDeProductos == 1){
+                        if(App.gama.getEstantes().get(estante).llenando == false){
+                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
+                            if(App.gama.getEstantes().get(estante).exists(producto)){
+                                App.gama.getEstantes().get(estante).deleteProducto();
+                                this.productos.add(producto);
+                            } else {
+                                System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                            }
+                        }  else {
+                            System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                        }
+                    } else if(cantidadDeProductos == 2) {
+                        if(App.gama.getEstantes().get(estante).llenando == false){
+                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
+                            if(App.gama.getEstantes().get(estante).exists(producto)){
+                                App.gama.getEstantes().get(estante).deleteProducto();
+                                this.productos.add(producto);
+                            } else {
+                                System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                            }
+                        }  else {
+                            System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                        }
+
+                        if(App.gama.getEstantes().get(estante).llenando == false){
+                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
+                            if(App.gama.getEstantes().get(estante).exists(producto)){
+                                App.gama.getEstantes().get(estante).deleteProducto();
+                                this.productos.add(producto);
+                            } else {
+                                System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                            }
+                        }  else {
+                            System.out.println("Oh no se acabaron los productos del estante #" + estante);
+                        }
+                    }
                 }
-                System.out.println("Se han eliminado " + cantidadDeProductos + " productos de manera exitosa");
-            }
-            
-            /*
-                El valor de cantidad de producto debe ser recorrido en el array de productos y además
-                debería ser restado de la cantidad de productos en dicho estante
-            */
-            System.out.println("El cliente #" + this.id + " agarró " + cantidadDeProductos + " productos");
-            
-            /*
-                Soltamos estante
-            */
-            sEstante.release();
 
-            /*
-                Como es un while infinito, este código se repetirá una 
-                y otra vez.
-            */
+                /*
+                    El valor de cantidad de producto debe ser recorrido en el array de productos y además
+                    debería ser restado de la cantidad de productos en dicho estante
+                */
+                System.out.println("El cliente #" + this.id + " agarró " + cantidadDeProductos + " productos");
+
+                /*
+                    Soltamos estante
+                */
+                App.gama.getEstantes().get(estante).enUso = false;
+                sEstante.release();
+
+                /*
+                    Como es un while infinito, este código se repetirá una 
+                    y otra vez.
+                */
+            } else {
+                System.out.println("El cliente #" + this.id + " está acatando órdenes de distanciamiento social mientras se llena estante #" + estante);
+                Thread.sleep(2000);
+                agarrarProducto(estante);
+            }
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante #" + estante);
         }

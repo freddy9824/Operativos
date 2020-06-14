@@ -25,6 +25,7 @@ public class App {
     Semaphore sEstante;
     public static int maxCantidadDeEstantes;
     public static int estantesIniciales = 1;
+    public static int estantesDisponibles = 1;
     public static int maxCantidadDeProductosPorEstantes = 10;
     public static int duracionDeHora;
     public static int cajasRegistradorasIniciales;
@@ -44,6 +45,7 @@ public class App {
     public static volatile ArrayList<Cliente> clientesEnColaParaPagar;
     public static volatile ArrayList<CajaRegistradora> cajaRegistradora;
     public static volatile ArrayList<Mostrador> mostradores;
+    public static Empleado[] empleados;
     
      public App() {
         /*
@@ -63,11 +65,25 @@ public class App {
     }
 
     public int getCantEstantes() {
-        return cantEstantes;
+        return estantesDisponibles;
     }
 
     public void setCantEstantes(int cantEstantes) {
-        this.cantEstantes = cantEstantes;
+        int largo = estantesDisponibles;
+        App.estantesDisponibles = estantesDisponibles + 1;
+        gama.getEstantes().add(new Estante(largo));
+
+        new Empleado(
+            largo         // Su ID
+        ).start();
+
+        /*
+            Al hacer clientes[i].start() comenzamos a correr el hilo.
+            Esto genera muchas confusiones porque la función que definimos
+            en Cliente se llama run() pero bueno, es lo que hay, ¿no?
+        */
+        //empleados[largo].start();
+        this.sEstante.release(1);
     }
 
     public int getCantCajaRegistradora() {
@@ -87,11 +103,13 @@ public class App {
         LeerArchivo();
         
          if(iniciar){
+             estantesDisponibles = estantesIniciales;
              carritosDisponibles = carritosIniciales;
              nroClientesEnColaParaEntrar = 0;
              clientesEnColaParaEntrar = new ArrayList<Cliente>();
              clientesEnColaParaPagar = new ArrayList<Cliente>();
              mostradores = new ArrayList<Mostrador>();
+             empleados = new Empleado[estantesIniciales];
             /*
                 Vamos a crear unos cuantos clientes, ve a Clientes para saber
                 sobre los hilos y cómo usarlos.
@@ -100,7 +118,7 @@ public class App {
             
             int id = 1;
 
-            Empleado[] empleados = new Empleado[estantesIniciales];
+            //Empleado[] empleados = new Empleado[estantesIniciales];
 
             for (int i = 0; i < estantesIniciales; i++) {
 
