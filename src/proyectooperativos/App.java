@@ -97,7 +97,7 @@ public class App {
                 sobre los hilos y cómo usarlos.
             */
             gama = new Mercado();
-
+            
             int id = 1;
 
             Empleado[] empleados = new Empleado[estantesIniciales];
@@ -119,9 +119,6 @@ public class App {
                 empleados[i].start();
             }
             
-            String stand = Integer.toString(getCantEstantes());
-            String caja = Integer.toString(getCantCajaRegistradora());
-            String car = Integer.toString(getCantCarritos());
             
             
             for (int i = 0; i < cajasRegistradorasIniciales; i++) {
