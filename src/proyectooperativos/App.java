@@ -32,6 +32,8 @@ public class App {
     public static int maxCantidadDeCajasRegistradoras;
     public static int carritosIniciales = 1;
     public static int maxCantidadDeCarritos;
+    public static int carritosDisponibles;
+    public static int nroClientesEnColaParaEntrar = 0;
     public static Mercado gama;
     javax.swing.JTextField estantes;
     javax.swing.JTextField cajeros;
@@ -52,11 +54,12 @@ public class App {
     }
 
     public int getCantCarritos() {
-        return cantCarritos;
+        return carritosIniciales;
     }
 
     public void setCantCarritos(int cantCarritos) {
-        this.cantCarritos = cantCarritos;
+        App.carritosIniciales = App.carritosIniciales + cantCarritos;
+        this.sCarrito.release(cantCarritos);
     }
 
     public int getCantEstantes() {
@@ -84,6 +87,8 @@ public class App {
         LeerArchivo();
         
          if(iniciar){
+             carritosDisponibles = carritosIniciales;
+             nroClientesEnColaParaEntrar = 0;
              clientesEnColaParaEntrar = new ArrayList<Cliente>();
              clientesEnColaParaPagar = new ArrayList<Cliente>();
              mostradores = new ArrayList<Mostrador>();
@@ -126,6 +131,7 @@ public class App {
                 try {
                     if(sCarrito.tryAcquire()){
                         //System.out.println("Adquiriendo Carrito el cliente #" + id);
+                        App.carritosDisponibles = sCarrito.availablePermits();
                         Thread.sleep(2000);
                         if(App.clientesEnColaParaEntrar.size() > 0) {
                             App.clientesEnColaParaEntrar.remove(0).start();
@@ -140,6 +146,7 @@ public class App {
                         /*
                             Un cliente entra cada X tiempo
                         */
+                        nroClientesEnColaParaEntrar++;
                         Thread.sleep(5000);
                         System.out.println("El cliente #" + id + " está esperando a ser atendido");
                         App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajaRegistradora));
@@ -191,7 +198,7 @@ public class App {
             arrayAux = aux.split(":");
             maxCantidadDeCarritos = Integer.parseInt(arrayAux[1]);
 
-            if ((estantesIniciales > maxCantidadDeEstantes) || estantesIniciales <= 0 || maxCantidadDeEstantes <= 2 || maxCantidadDeProductosPorEstantes < 3 || maxCantidadDeProductosPorEstantes > 10) {
+            if ((estantesIniciales > maxCantidadDeEstantes) || estantesIniciales <= 0 || maxCantidadDeEstantes <= 2 || maxCantidadDeProductosPorEstantes < 1) {
                 JOptionPane.showMessageDialog(null, "Inconsistencia de datos de configuración de estantes");
                 System.exit(0);
             }else if((cajasRegistradorasIniciales > maxCantidadDeCajasRegistradoras) || cajasRegistradorasIniciales <= 0){
