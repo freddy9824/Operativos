@@ -134,6 +134,7 @@ public class App {
                         App.carritosDisponibles = sCarrito.availablePermits();
                         Thread.sleep(2000);
                         if(App.clientesEnColaParaEntrar.size() > 0) {
+                            System.out.println("Adquiriendo Carrito el cliente #" + (id - 1) + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             App.clientesEnColaParaEntrar.remove(0).start();
                         } else {
                             System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
