@@ -55,21 +55,27 @@ public class CajaRegistradora extends Thread{
             System.out.println("Cola actual " + App.clientesEnColaParaPagar.size() + " personas según Cajero #" + this.id );
             App.nroClientesEnColaParaPagar = App.clientesEnColaParaPagar.size();
             if(App.clientesEnColaParaPagar.size() > 0){
+                int ganancias = 0;
                 Cliente cliente = App.clientesEnColaParaPagar.remove(0);
                 if(cliente != null){
                      if(!cliente.atendido){
                        int idCliente = cliente.id;
                        System.out.println("El cajero #" + this.id + " está atendiendo a cliente #" + idCliente );
                        cliente.atendido = true;
-                       cliente.productos.forEach( (producto) -> {
+                       for(int i = 0; i < cliente.productos.size(); i++){
                            try {
                                 Thread.sleep(1000);
-                                System.out.println("El cajero #" + this.id + " pasó el producto #" + producto.getId() + " del cliente #" + idCliente );
+                                ganancias = ganancias + cliente.productos.get(i).getPrecio();
+                                System.out.println("El cajero #" + this.id + " pasó el producto #" + cliente.productos.get(i).getId() + " del cliente #" + idCliente );
                             } catch(InterruptedException e) {
                                 System.out.println("Error");
                             }
-                       });
+                       }
                        cliente.pago = true;
+                       
+                       Thread.sleep(500); //0.5 min;
+                       System.out.println("Agregadas " + ganancias + " a las ganancias totales");
+                       App.gananciasTotales = App.gananciasTotales + ganancias;
                        //break;
                    }
                 }

@@ -14,7 +14,7 @@ import java.util.Random;
 class Producto {
     Random random = new Random();
     private int id;
-    private int precio;
+    public int precio;
 
     public Producto(int id) {
         this.id = id;

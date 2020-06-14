@@ -11,6 +11,9 @@ package proyectooperativos;
  */
 class Supervisor extends Thread{
     private int hora;
+    
+    public Supervisor(){
+    }
 
     public void setHora(int hora) {
         this.hora = hora;
@@ -27,17 +30,26 @@ class Supervisor extends Thread{
     
     @Override
     public void run() {
-        marcarHora(hora);
-        try {
-            sleep(1500); // 1.5 Min
-            System.out.println("Han pasado: " + hora);
-        } catch (InterruptedException e) {
-            System.out.println("Error");
+        System.out.println("El Supervisor está corriendo y les desea una feliz jornada laboral a los empleados");
+        while(true){
+            try {
+                sleep(5000); // 1 hora
+                marcarHora();
+            } catch (InterruptedException e) {
+                System.out.println("Error");
+            }
         }
     }
     
-    int marcarHora(int a) {
-        a = a+1;
-        return a;
+    public void marcarHora() {
+        App.horasAbierto = App.horasAbierto + 1;
+        if(App.horasAbierto < 8){
+            System.out.println("El Supervisor dice que ha pasado 1 hora, dando un total de " + App.horasAbierto);
+        } else {
+            System.out.println("El Supervisor dice que ya han pasado 8 horas, se procederán a resetear contadores de ganancia y horas");
+            System.out.println("GANANCIAS TOTALES: " + App.gananciasTotales + " CA CHING!, 'más cerca de tener el yate' susurra el Supervisor");
+            App.horasAbierto = 0;
+            App.gananciasTotales = 0;
+        }
     }
 }

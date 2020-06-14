@@ -35,6 +35,8 @@ public class App {
     public static int carritosDisponibles;
     public static int nroClientesEnColaParaEntrar = 0;
     public static int nroClientesEnColaParaPagar = 0;
+    public static int horasAbierto = 0;
+    public static int gananciasTotales = 0;
     public static Mercado gama;
     javax.swing.JTextField estantes;
     javax.swing.JTextField cajeros;
@@ -46,6 +48,7 @@ public class App {
     public static volatile ArrayList<CajaRegistradora> cajaRegistradora;
     public static volatile ArrayList<Mostrador> mostradores;
     public static Empleado[] empleados;
+    public static Supervisor supervisor;
     
      public App() {
         /*
@@ -115,6 +118,9 @@ public class App {
                 sobre los hilos y cómo usarlos.
             */
             gama = new Mercado();
+            
+            supervisor = new Supervisor();
+            supervisor.start();
             
             int id = 1;
 
