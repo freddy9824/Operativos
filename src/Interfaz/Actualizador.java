@@ -10,13 +10,13 @@ import javax.swing.*;
  * @author Felix Castillo
  */
 public class Actualizador extends Thread{
-    int auxEstante;
-    int auxClientesEnSist;
-    int auxCajaRegistradora;
-    int auxCarritosDisponibles;
-    int auxPersonasEnEspera;
-    int auxHorasLaborales;
-    int auxGananciasDia;
+    volatile int auxEstante;
+    volatile int auxClientesEnSist;
+    volatile int auxCajaRegistradora;
+    volatile int auxCarritosDisponibles;
+    volatile int auxPersonasEnEspera;
+    volatile int auxHorasLaborales;
+    volatile int auxGananciasDia;
     String appEstante;
     String appClientesEnSist;
     String appCajaRegistradora;
@@ -57,20 +57,22 @@ public class Actualizador extends Thread{
     @Override
     public void run() {
         while  (true) {
-            this.appEstante = Integer.toString(this.auxEstante);
-            this.appClientesEnSist = Integer.toString(this.auxClientesEnSist);
-            this.appCajaRegistradora = Integer.toString(this.auxCajaRegistradora);
-            this.appCarritosDisponibles = Integer.toString(this.auxCarritosDisponibles);
-            this.appPersonasEnEspera = Integer.toString(this.auxPersonasEnEspera);
-            this.appHorasLaborales = Integer.toString(this.auxHorasLaborales);
-            this.appGananciasDia = Integer.toString(this.auxGananciasDia);
-            this.estante.setText(appEstante);
-            this.clientesEnSist.setText(appClientesEnSist);
-            this.cajasRegistradoras.setText(appCajaRegistradora);
-            this.carritosDisponibles.setText(appCarritosDisponibles);
-            this.personasEnEspera.setText(appPersonasEnEspera);
-            this.horasLaborales.setText(appHorasLaborales);
-            this.gananciasDia.setText(appGananciasDia);
+            appEstante = Integer.toString(auxEstante);
+            appClientesEnSist = Integer.toString(auxClientesEnSist);
+            appCajaRegistradora = Integer.toString(auxCajaRegistradora);
+            appCarritosDisponibles = Integer.toString(auxCarritosDisponibles);
+            appPersonasEnEspera = Integer.toString(auxPersonasEnEspera);
+            appHorasLaborales = Integer.toString(auxHorasLaborales);
+            appGananciasDia = Integer.toString(auxGananciasDia);
+            
+            
+            estante.setText(appEstante);
+            clientesEnSist.setText(appClientesEnSist);
+            cajasRegistradoras.setText(appCajaRegistradora);
+            carritosDisponibles.setText(appCarritosDisponibles);
+            personasEnEspera.setText(appPersonasEnEspera);
+            horasLaborales.setText(appHorasLaborales);
+            gananciasDia.setText(appGananciasDia);
         }
     }
     

@@ -19,8 +19,6 @@ public class ProyectoOperativos {
      */
     public static void main(String[] args) {
         App app = new App();
-        Gama gama = new Gama(app);
-        Actualizador act = new Actualizador(app.cantEstantes, 0, app.cantCajaRegistradora, app.cantCarritos, 0, 0, 0, gama.estantes, gama.clientesEnSistema, gama.cajasRegistradoras, gama.carritosDisponibles, gama.personasEnEspera, gama.horasRealizadas, gama.gananciasDia);
-        act.start();
-        app.iniciar();
+        Gama gama = new Gama(app); 
+        app.iniciar(gama.estantes, gama.clientesEnSistema, gama.cajasRegistradoras, gama.carritosDisponibles, gama.personasEnEspera, gama.horasRealizadas, gama.gananciasDia);
     }}

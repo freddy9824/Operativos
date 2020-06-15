@@ -101,7 +101,15 @@ public class App {
 
 
      
-     public void iniciar() {
+     public void iniciar(
+             javax.swing.JTextField shelves,
+             javax.swing.JTextField clientSist,
+             javax.swing.JTextField cashRegisters,
+             javax.swing.JTextField shoppingCart,
+             javax.swing.JTextField waitingPeople,
+             javax.swing.JTextField workingHours,
+             javax.swing.JTextField profits
+             ) {
          
         LeerArchivo();
         
@@ -129,7 +137,8 @@ public class App {
             for (int i = 0; i < estantesIniciales; i++) {
 
                 gama.getEstantes().add(new Estante(i));
-
+                String auxShelves = Integer.toString(gama.getEstantes().size());
+                shelves.setText(auxShelves);
                 empleados[i] = new Empleado(
                     i          // Su ID
                 );
@@ -149,10 +158,9 @@ public class App {
                 cajaRegistradoras[i] = new CajaRegistradora(
                     i          // Su ID
                 );
-                
                 cajaRegistradoras[i].start();
             }
-
+            
             while (true) {
                 try {
                     if(sCarrito.tryAcquire()){
@@ -169,6 +177,8 @@ public class App {
                             id++;
                             cliente.start();
                         }
+                        String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                        waitingPeople.setText(auxWait);
                     }else{
                         /*
                             Un cliente entra cada X tiempo
@@ -178,7 +188,11 @@ public class App {
                         System.out.println("El cliente #" + id + " está esperando a ser atendido");
                         App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante));
                         id++;
+                        String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                        waitingPeople.setText(auxWait);
                     };
+                    String aux = Integer.toString(maxCantidadDeCarritos-carritosDisponibles);
+                    shoppingCart.setText(aux);
                 }catch(InterruptedException e) {
                     System.out.println("Error");
                 }
