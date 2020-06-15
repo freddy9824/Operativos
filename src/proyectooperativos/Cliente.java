@@ -258,6 +258,7 @@ public class Cliente extends Thread {
                 Termino ejecución, este cliente no volverá
             */
             this.termino = true;
+            App.nroClientesEnSistema = App.nroClientesEnSistema - 1;
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
         }

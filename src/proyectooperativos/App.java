@@ -35,6 +35,7 @@ public class App {
     public static int carritosDisponibles;
     public static int nroClientesEnColaParaEntrar = 0;
     public static int nroClientesEnColaParaPagar = 0;
+    public static int nroClientesEnSistema = 0;
     public static int horasAbierto = 0;
     public static int gananciasTotales = 0;
     public static Mercado gama;
@@ -51,6 +52,7 @@ public class App {
     public static Supervisor supervisor;
     
      public App() {
+        LeerArchivo();
         /*
             Creación de semáforos
         */
@@ -64,6 +66,14 @@ public class App {
 
     public void setCantCarritos(int cantCarritos) {
         this.sCarrito.release(cantCarritos);
+        App.carritosDisponibles = this.sCarrito.availablePermits();
+    }
+    
+    public void eliminarCantCarritos(int cantCarritos) {
+        try{
+            this.sCarrito.acquire(cantCarritos);
+        }   catch(Exception e){
+        }
         App.carritosDisponibles = this.sCarrito.availablePermits();
     }
 
@@ -110,8 +120,6 @@ public class App {
              javax.swing.JTextField workingHours,
              javax.swing.JTextField profits
              ) {
-         
-        LeerArchivo();
         
          if(iniciar){
              estantesDisponibles = estantesIniciales;
@@ -166,6 +174,7 @@ public class App {
                 try {
                     if(sCarrito.tryAcquire()){
                         nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
+                        nroClientesEnSistema = nroClientesEnSistema + 1;
                         //System.out.println("Adquiriendo Carrito el cliente #" + id);
                         App.carritosDisponibles = sCarrito.availablePermits();
                         Thread.sleep(2000);
@@ -181,6 +190,7 @@ public class App {
                         }
                         String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
+                        clientSist.setText( Integer.toString( nroClientesEnSistema ) );
                     }else{
                         /*
                             Un cliente entra cada X tiempo
