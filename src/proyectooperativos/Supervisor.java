@@ -35,7 +35,7 @@ class Supervisor extends Thread{
         System.out.println("El Supervisor está corriendo y les desea una feliz jornada laboral a los empleados");
         while(true){
             try {
-                sleep(App.duracionDeHora/60*App.duracionDeHora); // 1 hora
+                sleep(App.duracionDeHora/60*60); // 1 hora
                 marcarHora();
             } catch (InterruptedException e) {
                 System.out.println("Error");
