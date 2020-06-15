@@ -130,6 +130,7 @@ public class App {
             supervisor = new Supervisor();
             supervisor.start();
             
+            
             int id = 1;
 
             //Empleado[] empleados = new Empleado[estantesIniciales];
@@ -192,8 +193,13 @@ public class App {
                         String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
                     };
-                    String aux = Integer.toString(carritosDisponibles);
-                    shoppingCart.setText(aux);
+                    String auxCart = Integer.toString(carritosDisponibles);
+                    shoppingCart.setText(auxCart);
+                    String auxProfits = Integer.toString(gananciasTotales);
+                    String auxHours = Integer.toString(horasAbierto);
+                    profits.setText(auxProfits);
+                    workingHours.setText(auxHours);
+                    
                 }catch(InterruptedException e) {
                     System.out.println("Error");
                 }
