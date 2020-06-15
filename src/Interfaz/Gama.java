@@ -222,6 +222,7 @@ public class Gama extends javax.swing.JFrame {
                 .addComponent(cerrar))
         );
 
+        numeroDeCarros.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         numeroDeCarros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numeroDeCarrosActionPerformed(evt);
@@ -365,12 +366,20 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarCarritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCarritosActionPerformed
         // TODO add your handling code here:
-       int a = Integer.parseInt(numeroDeCarros.getText());
-       app.setCantCarritos(a);
-        System.out.println(a + " Carritos Agregados, ahora el la cant de carros son: " + app.getCantCarritos());
-       numeroDeCarros.setText("");
-       String aux = Integer.toString(app.getCantCarritos());
-       carritosDisponibles.setText(aux);
+         if (numeroDeCarros.getText().isEmpty()) {
+            System.out.println("Colocar un Numero");
+        }else {
+        int a = Integer.parseInt(numeroDeCarros.getText());
+        if (a + App.nroClientesEnSistema > App.maxCantidadDeCarritos) {
+            System.out.println("no hay tal Disponibilidad de Carritos");
+        }
+        else {
+            app.setCantCarritos(a);
+            System.out.println(a + " Carritos Agregados, ahora el la cant de carros son: " + app.getCantCarritos());
+            String aux = Integer.toString(app.getCantCarritos());
+            carritosDisponibles.setText(aux);
+        }
+        numeroDeCarros.setText(""); }
     }//GEN-LAST:event_agregarCarritosActionPerformed
 
     private void agregarEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarEstanteActionPerformed
@@ -383,10 +392,16 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
         // TODO add your handling code here:
-        App.cajasRegistradorasIniciales++;
-        System.out.println("Se contrato al cajero en la caja numero " + app.cajasRegistradorasIniciales);
-        String aux = Integer.toString(app.cajasRegistradorasIniciales);
-        cajasRegistradoras.setText(aux);
+        if (App.cajasRegistradorasIniciales+1 > App.maxCantidadDeCajasRegistradoras) {
+            System.out.println("No podemos contratar otra caja");
+        }
+        else {
+            App.cajasRegistradorasIniciales = App.cajasRegistradorasIniciales+1;
+            System.out.println("Se contrato al cajero en la caja numero " + App.cajasRegistradorasIniciales);
+            String aux = Integer.toString(App.cajasRegistradorasIniciales);
+            cajasRegistradoras.setText(aux);
+        }
+        
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
@@ -399,6 +414,9 @@ public class Gama extends javax.swing.JFrame {
 
     private void eliminarCarritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCarritosActionPerformed
         // TODO add your handling code here:
+        if (numeroDeCarros.getText().isEmpty()) {
+            System.out.println("Colocar un Numero");
+        }else {
         int a = Integer.parseInt(numeroDeCarros.getText());
         if (app.getCantCarritos()- a > 0) {
             app.eliminarCantCarritos(a);
@@ -409,7 +427,7 @@ public class Gama extends javax.swing.JFrame {
         }
        numeroDeCarros.setText("");
        String aux = Integer.toString(app.getCantCarritos());
-       carritosDisponibles.setText(aux);
+       carritosDisponibles.setText(aux); }
     }//GEN-LAST:event_eliminarCarritosActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
