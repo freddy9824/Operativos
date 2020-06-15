@@ -164,6 +164,7 @@ public class App {
             while (true) {
                 try {
                     if(sCarrito.tryAcquire()){
+                        nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
                         //System.out.println("Adquiriendo Carrito el cliente #" + id);
                         App.carritosDisponibles = sCarrito.availablePermits();
                         Thread.sleep(2000);
@@ -183,15 +184,15 @@ public class App {
                         /*
                             Un cliente entra cada X tiempo
                         */
-                        nroClientesEnColaParaEntrar++;
-                        Thread.sleep(5000);
+                        nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
+                        Thread.sleep(1000);
                         System.out.println("El cliente #" + id + " está esperando a ser atendido");
                         App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante));
                         id++;
                         String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
                     };
-                    String aux = Integer.toString(maxCantidadDeCarritos-carritosDisponibles);
+                    String aux = Integer.toString(carritosDisponibles);
                     shoppingCart.setText(aux);
                 }catch(InterruptedException e) {
                     System.out.println("Error");
