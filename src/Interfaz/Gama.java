@@ -384,10 +384,15 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarEstanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarEstanteActionPerformed
         // TODO add your handling code here:
-        app.setCantEstantes(app.getCantEstantes() + 1);
-        System.out.println("El estante numero " + app.getCantEstantes() + " Empezo a funcionar");
-        String aux = Integer.toString(app.getCantEstantes());
-        estantes.setText(aux);
+        if (app.getCantEstantes() + 1 > App.maxCantidadDeEstantes) {
+            System.out.println("No se puede agregar otro Estante");
+        }
+        else {
+            app.setCantEstantes(app.getCantEstantes() + 1);
+            System.out.println("El estante numero " + app.getCantEstantes() + " Empezo a funcionar");
+            String aux = Integer.toString(app.getCantEstantes());
+            estantes.setText(aux);
+        }
     }//GEN-LAST:event_agregarEstanteActionPerformed
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
