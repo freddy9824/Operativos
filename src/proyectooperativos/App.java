@@ -18,9 +18,6 @@ import javax.*;
  * @author Sagasjan
  */
 public class App {
-    int cantCarritos = 1;
-    int cantEstantes=1;
-    int cantCajaRegistradora=4;
     Semaphore sCarrito;
     Semaphore sEstante;
     public static int maxCantidadDeEstantes;
@@ -57,7 +54,7 @@ public class App {
             Creación de semáforos
         */
         this.sCarrito = new Semaphore(App.carritosIniciales);
-        this.sEstante = new Semaphore(this.cantEstantes);
+        this.sEstante = new Semaphore(App.estantesIniciales);
     }
 
     public int getCantCarritos() {
@@ -100,11 +97,11 @@ public class App {
     }
 
     public int getCantCajaRegistradora() {
-        return cantCajaRegistradora;
+        return 0;
     }
 
     public void setCantCajaRegistradora(int cantCajRegistradora) {
-        this.cantCajaRegistradora = cantCajRegistradora;
+        //this.cantCajaRegistradora = cantCajRegistradora;
     }
 
     
