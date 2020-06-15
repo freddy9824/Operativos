@@ -110,7 +110,7 @@ public class App {
      
      public void iniciar(
              javax.swing.JTextField shelves,
-             javax.swing.JTextField clientSist,
+             javax.swing.JTextField clientInSist,
              javax.swing.JTextField cashRegisters,
              javax.swing.JTextField shoppingCart,
              javax.swing.JTextField waitingPeople,
@@ -134,6 +134,7 @@ public class App {
             
             supervisor = new Supervisor();
             supervisor.start();
+            
             
             int id = 1;
 
@@ -186,7 +187,6 @@ public class App {
                         }
                         String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
-                        clientSist.setText( Integer.toString( nroClientesEnSistema ) );
                     }else{
                         /*
                             Un cliente entra cada X tiempo
@@ -199,8 +199,16 @@ public class App {
                         String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
                     };
-                    String aux = Integer.toString(carritosDisponibles);
-                    shoppingCart.setText(aux);
+                    String auxCart = Integer.toString(carritosDisponibles);
+                    shoppingCart.setText(auxCart);
+                    String auxProfits = Integer.toString(gananciasTotales);
+                    String auxHours = Integer.toString(horasAbierto);
+                    profits.setText(auxProfits);
+                    workingHours.setText(auxHours);
+                    String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+                    cashRegisters.setText(auxCashRegisters);
+                    clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
+                    
                 }catch(InterruptedException e) {
                     System.out.println("Error");
                 }

@@ -324,11 +324,12 @@ public class Gama extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(358, 358, 358)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(289, 289, 289)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(293, 293, 293))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,9 +383,9 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
         // TODO add your handling code here:
-        app.setCantCajaRegistradora(app.getCantCajaRegistradora()+1);
-        System.out.println("Se contrato al cajero en la caja numero " + app.getCantCajaRegistradora());
-        String aux = Integer.toString(app.getCantCajaRegistradora());
+        App.cajasRegistradorasIniciales++;
+        System.out.println("Se contrato al cajero en la caja numero " + app.cajasRegistradorasIniciales);
+        String aux = Integer.toString(app.cajasRegistradorasIniciales);
         cajasRegistradoras.setText(aux);
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed
 
