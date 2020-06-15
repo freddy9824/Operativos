@@ -197,7 +197,7 @@ public class Cliente extends Thread {
             }
             int indexProductos = 0;
             for(Producto producto : this.productos) {
-                Thread.sleep(App.duracionDeHora/60*(int) 0.5);
+                Thread.sleep((int) (App.duracionDeHora/60* 0.5));
                 System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
                 indexProductos++;
             }

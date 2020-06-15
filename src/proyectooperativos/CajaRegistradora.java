@@ -73,7 +73,7 @@ public class CajaRegistradora extends Thread{
                        }
                        cliente.pago = true;
                        
-                       Thread.sleep(App.duracionDeHora/60*(int) 0.5); //0.5 min;
+                       Thread.sleep((int) (App.duracionDeHora/60* 0.5)); //0.5 min;
                        System.out.println("Agregadas " + ganancias + " a las ganancias totales");
                        App.gananciasTotales = App.gananciasTotales + ganancias;
                        //break;
