@@ -156,7 +156,17 @@ public class App {
                 */
                 empleados[i].start();
             }
-            
+            String auxCart = Integer.toString(carritosDisponibles);
+            shoppingCart.setText(auxCart);
+            String auxProfits = Integer.toString(gananciasTotales);
+            String auxHours = Integer.toString(horasAbierto);
+            profits.setText(auxProfits);
+            workingHours.setText(auxHours);
+            String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+            cashRegisters.setText(auxCashRegisters);
+            clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
+            String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+            waitingPeople.setText(auxWait);
             
             CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
             
@@ -174,7 +184,7 @@ public class App {
                         nroClientesEnSistema = nroClientesEnSistema + 1;
                         //System.out.println("Adquiriendo Carrito el cliente #" + id);
                         App.carritosDisponibles = sCarrito.availablePermits();
-                        Thread.sleep(2000);
+                        Thread.sleep(duracionDeHora/60*2);
                         if(App.clientesEnColaParaEntrar.size() > 0) {
                             System.out.println("Adquiriendo Carrito el cliente #" + (id - 1) + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             App.clientesEnColaParaEntrar.remove(0).start();
@@ -185,27 +195,27 @@ public class App {
                             id++;
                             cliente.start();
                         }
-                        String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                        auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
                     }else{
                         /*
                             Un cliente entra cada X tiempo
                         */
                         nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
-                        Thread.sleep(1000);
+                        Thread.sleep(duracionDeHora/60*1);
                         System.out.println("El cliente #" + id + " está esperando a ser atendido");
                         App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante));
                         id++;
-                        String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                        auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
                     };
-                    String auxCart = Integer.toString(carritosDisponibles);
+                    auxCart = Integer.toString(carritosDisponibles);
                     shoppingCart.setText(auxCart);
-                    String auxProfits = Integer.toString(gananciasTotales);
-                    String auxHours = Integer.toString(horasAbierto);
+                    auxProfits = Integer.toString(gananciasTotales);
+                    auxHours = Integer.toString(horasAbierto);
                     profits.setText(auxProfits);
                     workingHours.setText(auxHours);
-                    String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+                    auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
                     cashRegisters.setText(auxCashRegisters);
                     clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
                     

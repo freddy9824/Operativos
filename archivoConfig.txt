@@ -1,8 +1,8 @@
-Tiempo, en segundos, que dura una hora en el programa:1
+Tiempo, en segundos, que dura una hora en el programa:10
 Número de estantes iniciales:1
 Número máximo de estantes permitidos:3
 Capacidad máxima de los estantes:10
 Número de cajas registradoras operando:2
 Número máximo de cajas registradoras permitidas:4
 Número de carritos iniciales:1
-Número máximo de carritos:3
+Número máximo de carritos:40

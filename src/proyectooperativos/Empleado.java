@@ -6,6 +6,7 @@
 package proyectooperativos;
 
 import java.util.concurrent.Semaphore;
+import static proyectooperativos.App.duracionDeHora;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Empleado extends Thread{
         try {
             if(App.gama.getEstantes().get(id).getProductos().size() < App.maxCantidadDeProductosPorEstantes){
                 System.out.println("Ire al almacen, soy el empleado #" + id);
-                sleep(4000); // 4 minutos
+                sleep(App.duracionDeHora/60*4); // 4 minutos
             }
         }catch (InterruptedException e){
             System.out.println("Error");
@@ -53,13 +54,13 @@ public class Empleado extends Thread{
             if(App.gama.getEstantes().get(id).getProductos().size() + 3 <= App.maxCantidadDeProductosPorEstantes){
                 System.out.println("Llenaré un estante, soy el empleado #" + id);
                 Mercado.estantes.get(id).llenando = true;
-                sleep(1000); // 1 minuto
+                sleep(App.duracionDeHora/60*1); // 1 minuto
                 for(int i = Mercado.estantes.get(id).getProductos().size(); i < 3; i++){
                     Mercado.estantes.get(id).addProducto(i);
                 }
                 Mercado.estantes.get(id).llenando = false;
             }else {
-                sleep(10000);
+                sleep(App.duracionDeHora/60*10);
                 System.out.println("Intentaré llenar mi estante otra vez, soy el empleado #" + id);
                 llenarEstante();
             }

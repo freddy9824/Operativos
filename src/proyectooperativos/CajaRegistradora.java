@@ -64,7 +64,7 @@ public class CajaRegistradora extends Thread{
                        cliente.atendido = true;
                        for(int i = 0; i < cliente.productos.size(); i++){
                            try {
-                                Thread.sleep(1000);
+                                Thread.sleep(App.duracionDeHora/60*1);
                                 ganancias = ganancias + cliente.productos.get(i).getPrecio();
                                 System.out.println("El cajero #" + this.id + " pasó el producto #" + cliente.productos.get(i).getId() + " del cliente #" + idCliente );
                             } catch(InterruptedException e) {
@@ -73,7 +73,7 @@ public class CajaRegistradora extends Thread{
                        }
                        cliente.pago = true;
                        
-                       Thread.sleep(500); //0.5 min;
+                       Thread.sleep(App.duracionDeHora/60*(int) 0.5); //0.5 min;
                        System.out.println("Agregadas " + ganancias + " a las ganancias totales");
                        App.gananciasTotales = App.gananciasTotales + ganancias;
                        //break;
@@ -113,7 +113,7 @@ public class CajaRegistradora extends Thread{
     private void leerProducto(int producto) {
         for (int i = 0; i < producto; i++) {
             try {
-                sleep(tiempo * 60 / 1000); // 1 minuto
+                sleep(App.duracionDeHora/60*1); // 1 minuto
             } catch(InterruptedException e) {
                 System.out.println("Error");
             }

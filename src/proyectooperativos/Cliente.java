@@ -8,6 +8,7 @@ package proyectooperativos;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
+import static proyectooperativos.App.duracionDeHora;
 
 /**
  *
@@ -81,7 +82,7 @@ public class Cliente extends Thread {
             /*
                 5 min para recorrer un estante
             */
-            Thread.sleep(300);
+            Thread.sleep(App.duracionDeHora/60*5);
 
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
@@ -97,7 +98,7 @@ public class Cliente extends Thread {
                 /*
                     1 min para agarrar algo del estante
                 */
-                Thread.sleep(1000);
+                Thread.sleep(App.duracionDeHora/60*1);
 
                 /*
                     Un cliente solo agarra entre 0 a 2 productos
@@ -178,7 +179,7 @@ public class Cliente extends Thread {
                 */
             } else {
                 System.out.println("El cliente #" + this.id + " está acatando órdenes de distanciamiento social mientras se llena estante #" + estante);
-                Thread.sleep(2000);
+                Thread.sleep(App.duracionDeHora/60*2);
                 agarrarProducto(estante);
             }
         } catch (InterruptedException e) {
@@ -192,16 +193,16 @@ public class Cliente extends Thread {
             System.out.println("El cliente #" + this.id + " entró en la cola para pagar" );
             App.clientesEnColaParaPagar.add(this);
             while(!atendido){
-                Thread.sleep(1000);
+                Thread.sleep(App.duracionDeHora/60*1);
             }
             int indexProductos = 0;
             for(Producto producto : this.productos) {
-                Thread.sleep(500);
+                Thread.sleep(App.duracionDeHora/60*(int) 0.5);
                 System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
                 indexProductos++;
             }
             while(!pago){
-                Thread.sleep(1000);
+                Thread.sleep(App.duracionDeHora/60*1);
             }
 //            if(sCajaRegistradora.tryAcquire()){
 //                /*
@@ -250,7 +251,7 @@ public class Cliente extends Thread {
             /*
                 2 min para regresar carrito a su lugar
             */
-            Thread.sleep(1200);
+            Thread.sleep(App.duracionDeHora/60*2);
             this.sCarrito.release();
             App.carritosDisponibles = this.sCarrito.availablePermits();
             System.out.println("El cliente #" + this.id + " ha regresado su carrito");

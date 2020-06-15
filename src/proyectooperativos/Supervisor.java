@@ -5,6 +5,8 @@
  */
 package proyectooperativos;
 
+import static proyectooperativos.App.duracionDeHora;
+
 /**
  *
  * @author Felix Castillo
@@ -33,7 +35,7 @@ class Supervisor extends Thread{
         System.out.println("El Supervisor está corriendo y les desea una feliz jornada laboral a los empleados");
         while(true){
             try {
-                sleep(5000); // 1 hora
+                sleep(App.duracionDeHora/60*5); // 1 hora
                 marcarHora();
             } catch (InterruptedException e) {
                 System.out.println("Error");
