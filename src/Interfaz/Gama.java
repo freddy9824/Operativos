@@ -365,7 +365,7 @@ public class Gama extends javax.swing.JFrame {
     private void agregarCarritosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCarritosActionPerformed
         // TODO add your handling code here:
        int a = Integer.parseInt(numeroDeCarros.getText());
-       app.setCantCarritos(a + app.getCantCarritos());
+       app.setCantCarritos(a);
         System.out.println(a + " Carritos Agregados, ahora el la cant de carros son: " + app.getCantCarritos());
        numeroDeCarros.setText("");
        String aux = Integer.toString(app.getCantCarritos());
@@ -400,7 +400,7 @@ public class Gama extends javax.swing.JFrame {
         // TODO add your handling code here:
         int a = Integer.parseInt(numeroDeCarros.getText());
         if (app.getCantCarritos()- a > 0) {
-            app.setCantCarritos(app.getCantCarritos()- a);
+            app.eliminarCantCarritos(a);
             System.out.println(a + " Carritos Removidos, ahora el la cant de carros son: " + app.getCantCarritos());
         }
         else {
