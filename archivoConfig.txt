@@ -1,4 +1,4 @@
-Tiempo, en segundos, que dura una hora en el programa:10
+Tiempo, en segundos, que dura una hora en el programa:30
 Número de estantes iniciales:1
 Número máximo de estantes permitidos:3
 Capacidad máxima de los estantes:10
