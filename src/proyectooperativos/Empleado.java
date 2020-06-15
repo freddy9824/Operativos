@@ -32,8 +32,13 @@ public class Empleado extends Thread{
     @Override
     public void run() {
         while(true) {
-            traerCajas();
-            llenarEstante();
+            //try {
+                //Thread.sleep( ( (5/60) *App.duracionDeHora) * 1000 );
+                traerCajas();
+                llenarEstante();
+//            }catch (InterruptedException e){
+//                System.out.println("Error");
+//            }
         }
     }
    
@@ -41,8 +46,8 @@ public class Empleado extends Thread{
     private void traerCajas() {
         try {
             if(App.gama.getEstantes().get(id).getProductos().size() < App.maxCantidadDeProductosPorEstantes){
-                System.out.println("Ire al almacen, soy el empleado #" + id);
-                sleep(App.duracionDeHora/60*4); // 4 minutos
+                //System.out.println("Ire al almacen, soy el empleado #" + id);
+                Thread.sleep( ( (4/60) *App.duracionDeHora) * 1000 ); // 4 minutos
             }
         }catch (InterruptedException e){
             System.out.println("Error");
@@ -52,17 +57,13 @@ public class Empleado extends Thread{
     private void llenarEstante() {
         try {
             if(App.gama.getEstantes().get(id).getProductos().size() + 3 <= App.maxCantidadDeProductosPorEstantes){
-                System.out.println("Llenaré un estante, soy el empleado #" + id);
-                Mercado.estantes.get(id).llenando = true;
-                sleep(App.duracionDeHora/60*1); // 1 minuto
-                for(int i = Mercado.estantes.get(id).getProductos().size(); i < 3; i++){
-                    Mercado.estantes.get(id).addProducto(i);
+                //System.out.println("Llenaré un estante, soy el empleado #" + id);
+                App.gama.estantes.get(id).llenando = true;
+                Thread.sleep( ( (1/60) *App.duracionDeHora) * 1000 ); // 1 minuto
+                for(int i = App.gama.estantes.get(id).getProductos().size(); i < 3; i++){
+                    App.gama.estantes.get(id).addProducto(i);
                 }
-                Mercado.estantes.get(id).llenando = false;
-            }else {
-                sleep(App.duracionDeHora/60*10);
-                System.out.println("Intentaré llenar mi estante otra vez, soy el empleado #" + id);
-                llenarEstante();
+                App.gama.estantes.get(id).llenando = false;
             }
         }catch (InterruptedException e){
             System.out.println("Error");

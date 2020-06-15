@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
 import javax.swing.JOptionPane;
 import javax.*;
@@ -20,6 +21,7 @@ import javax.*;
 public class App {
     Semaphore sCarrito;
     Semaphore sEstante;
+    Semaphore sCajero;
     public static int maxCantidadDeEstantes;
     public static int estantesIniciales = 1;
     public static int estantesDisponibles = 1;
@@ -35,16 +37,16 @@ public class App {
     public static int nroClientesEnSistema = 0;
     public static int horasAbierto = 0;
     public static int gananciasTotales = 0;
-    public static Mercado gama;
+    public static volatile Mercado gama;
     javax.swing.JTextField estantes;
     javax.swing.JTextField cajeros;
     javax.swing.JTextField carritos;
     File archivoConfig = new File("archivoConfig.txt"); 
     public static volatile boolean iniciar = false;
-    public static volatile ArrayList<Cliente> clientesEnColaParaEntrar;
-    public static volatile ArrayList<Cliente> clientesEnColaParaPagar;
+    public static volatile CopyOnWriteArrayList<Cliente> clientesEnColaParaEntrar;
+    public static volatile CopyOnWriteArrayList<Cliente> clientesEnColaParaPagar;
     public static volatile ArrayList<CajaRegistradora> cajaRegistradora;
-    public static volatile ArrayList<Mostrador> mostradores;
+    public static volatile CopyOnWriteArrayList<Mostrador> mostradores;
     public static Empleado[] empleados;
     public static Supervisor supervisor;
     
@@ -55,6 +57,7 @@ public class App {
         */
         this.sCarrito = new Semaphore(App.carritosIniciales);
         this.sEstante = new Semaphore(App.estantesIniciales);
+        this.sCajero = new Semaphore(App.cajasRegistradorasIniciales);
     }
 
     public int getCantCarritos() {
@@ -119,17 +122,16 @@ public class App {
              ) {
         
          if(iniciar){
+            /*
+                Agarramos los valores iniciales para poner a funcionar el Mercado
+            */
              estantesDisponibles = estantesIniciales;
              carritosDisponibles = carritosIniciales;
              nroClientesEnColaParaEntrar = 0;
-             clientesEnColaParaEntrar = new ArrayList<Cliente>();
-             clientesEnColaParaPagar = new ArrayList<Cliente>();
-             mostradores = new ArrayList<Mostrador>();
+             clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
+             clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
+             mostradores = new CopyOnWriteArrayList<Mostrador>();
              empleados = new Empleado[estantesIniciales];
-            /*
-                Vamos a crear unos cuantos clientes, ve a Clientes para saber
-                sobre los hilos y cómo usarlos.
-            */
             gama = new Mercado();
             
             supervisor = new Supervisor();
@@ -171,6 +173,7 @@ public class App {
             CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
             
             for (int i = 0; i < cajasRegistradorasIniciales; i++) {
+                gama.getMostradores().add(new Mostrador(i));
                 cajaRegistradoras[i] = new CajaRegistradora(
                     i          // Su ID
                 );
@@ -179,19 +182,22 @@ public class App {
             
             while (true) {
                 try {
+                    /*
+                        El cliente llega y toma inmediatamente un carrito disponible
+                    */
                     if(sCarrito.tryAcquire()){
                         nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
                         nroClientesEnSistema = nroClientesEnSistema + 1;
                         //System.out.println("Adquiriendo Carrito el cliente #" + id);
                         App.carritosDisponibles = sCarrito.availablePermits();
-                        Thread.sleep(duracionDeHora/60*2);
+                        //Thread.sleep(duracionDeHora/60*2);
                         if(App.clientesEnColaParaEntrar.size() > 0) {
                             System.out.println("Adquiriendo Carrito el cliente #" + (id - 1) + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             App.clientesEnColaParaEntrar.remove(0).start();
                         } else {
                             System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
                             Cliente cliente = new Cliente(
-                            id, this.sCarrito, this.sEstante);
+                            id, this.sCarrito, this.sEstante, this.sCajero);
                             id++;
                             cliente.start();
                         }
@@ -201,10 +207,10 @@ public class App {
                         /*
                             Un cliente entra cada X tiempo
                         */
+                        Thread.sleep( ( (5/60)*App.duracionDeHora) * 1000 );
                         nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
-                        Thread.sleep(duracionDeHora/60*1);
-                        System.out.println("El cliente #" + id + " está esperando a ser atendido");
-                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante));
+                        //System.out.println("El cliente #" + id + " está esperando a ser atendido");
+                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajero));
                         id++;
                         auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                         waitingPeople.setText(auxWait);
@@ -222,12 +228,6 @@ public class App {
                 }catch(InterruptedException e) {
                     System.out.println("Error");
                 }
-//                Cliente cliente = new Cliente(
-//                id, this.sCarrito, this.sEstante, this.sCajaRegistradora);
-//                id++;
-//                cliente.start();
-                //String b = Integer.toString(id);
-                //a.setText(b);
             }
          }
          
@@ -242,7 +242,7 @@ public class App {
             BufferedReader bf = new BufferedReader(new FileReader(archivoConfig));           
             aux = bf.readLine();
             arrayAux = aux.split(":");
-            duracionDeHora = Integer.parseInt(arrayAux[1])*1000;
+            duracionDeHora = Integer.parseInt(arrayAux[1]);
             aux = bf.readLine();
             arrayAux = aux.split(":");
             estantesIniciales = Integer.parseInt(arrayAux[1]);

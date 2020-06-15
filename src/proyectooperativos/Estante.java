@@ -6,6 +6,7 @@
 package proyectooperativos;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  */
 public class Estante {
     private int id;
-    private volatile ArrayList<Producto> productos = new ArrayList<Producto>();
+    private volatile CopyOnWriteArrayList<Producto> productos = new CopyOnWriteArrayList<Producto>();
     public volatile boolean llenando = false;
     public volatile boolean enUso = false;
     
@@ -28,7 +29,7 @@ public class Estante {
         System.out.println("El estante " + this.id  + " ha sido creado" );
     }
     
-    public ArrayList<Producto> getProductos() {
+    public CopyOnWriteArrayList<Producto> getProductos() {
         return productos;
     }
     
@@ -36,8 +37,8 @@ public class Estante {
         productos.add(new Producto(id));
     }
     
-     public Producto deleteProducto() {
-        return productos.remove(0);
+     public void deleteProducto(Producto producto) {
+        productos.remove(producto);
     }
      
       public Producto getProducto() {

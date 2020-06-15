@@ -7,6 +7,7 @@ package proyectooperativos;
 
 import java.util.concurrent.Semaphore;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -14,20 +15,20 @@ import java.util.ArrayList;
  */
 public class Mostrador {
     private int id;
-    public volatile int cantidadDeProductos = 0;
-    public volatile int precioTotalDeProductos = 0;
-    public volatile ArrayList<Producto> productos = new ArrayList<Producto>();
     public volatile boolean ocupado = false;
-    public volatile Cliente cliente = null;
+    public volatile int cliente = 0;
+    public volatile CopyOnWriteArrayList<Producto> productos = new CopyOnWriteArrayList<Producto>();
+    public volatile boolean pago = false;
     
     public Mostrador(int id) {
         this.id = id;
     }
     
     public void clear(){
-        this.cantidadDeProductos = 0;
-        this.precioTotalDeProductos = 0;
         this.ocupado = false;
+        this.pago = false;
+        this.cliente = -1;
+        this.productos.clear();
     }
    
 }

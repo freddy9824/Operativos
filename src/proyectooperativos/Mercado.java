@@ -6,23 +6,25 @@
 package proyectooperativos;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
  * @author Felix Castillo
  */
 public class Mercado {
-    public static volatile ArrayList<Estante> estantes = new ArrayList<Estante>(); // puede ser una lista no se
+    public volatile CopyOnWriteArrayList<Estante> estantes = new CopyOnWriteArrayList<Estante>();
+    public volatile CopyOnWriteArrayList<Mostrador> mostradores = new CopyOnWriteArrayList<Mostrador>();
     private int carrito; // semaforo
     private int cajaRegistradora; //semaforo
     // Si lleva numero maximo ha que colocarlo
 
-    public ArrayList<Estante> getEstantes() {
+    public CopyOnWriteArrayList<Estante> getEstantes() {
         return estantes;
     }
 
-    public int getCajaRegistradora() {
-        return cajaRegistradora;
+    public CopyOnWriteArrayList<Mostrador> getMostradores() {
+        return mostradores;
     }
 
     public void crearCarrito(int a) {

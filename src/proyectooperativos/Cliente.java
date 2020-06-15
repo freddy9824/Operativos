@@ -6,9 +6,11 @@
 package proyectooperativos;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Random;
 import java.util.concurrent.Semaphore;
 import static proyectooperativos.App.duracionDeHora;
+import java.util.Iterator;
 
 /**
  *
@@ -19,16 +21,17 @@ public class Cliente extends Thread {
     public volatile boolean atendido = false;
     public volatile boolean pago = false;
     public int id;
-    public ArrayList<Producto> productos = new ArrayList<Producto>();
+    public CopyOnWriteArrayList<Producto> productos = new CopyOnWriteArrayList<Producto>();
     private int cantidadDeProductos;
     private int tiempo;
-    private ArrayList<Number> recorridos = new ArrayList<Number>();;
+    private CopyOnWriteArrayList<Number> recorridos = new CopyOnWriteArrayList<Number>();;
     Random random = new Random();
     
     Semaphore sCarrito;
     Semaphore sEstante;
+    Semaphore sCajero;
     
-    public Cliente(int id, Semaphore sCarrito, Semaphore sEstante) {
+    public Cliente(int id, Semaphore sCarrito, Semaphore sEstante, Semaphore sCajero) {
         this.id = id;
         
         /*
@@ -38,17 +41,13 @@ public class Cliente extends Thread {
         */
         this.sCarrito = sCarrito;
         this.sEstante = sEstante;
+        this.sCajero = sCajero;
     }
     
     @Override
     public void run() {
         while(!termino) {
 
-            /*
-                El cliente llega y toma inmediatamente un carrito disponible
-            */
-                //tomarCarrito();
-                //Thread.sleep(1000);
                 while(recorridos.size() < App.estantesDisponibles){
                     for(int i = 0; i < App.estantesDisponibles; i++){
                         if(!recorridos.contains(i)){
@@ -82,7 +81,7 @@ public class Cliente extends Thread {
             /*
                 5 min para recorrer un estante
             */
-            Thread.sleep(App.duracionDeHora/60*5);
+            Thread.sleep( ( (5/60) *App.duracionDeHora) * 1000 );
 
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
@@ -98,35 +97,19 @@ public class Cliente extends Thread {
                 /*
                     1 min para agarrar algo del estante
                 */
-                Thread.sleep(App.duracionDeHora/60*1);
+                Thread.sleep( ( (1/60) *App.duracionDeHora) * 1000 );
 
                 /*
                     Un cliente solo agarra entre 0 a 2 productos
                 */   
                 this.cantidadDeProductos = random.nextInt(2 - 0 + 1) + 0;
-//
-//                if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
-//                    for(int i = 0; i < cantidadDeProductos; i++){
-//                        if(App.gama.getEstantes().get(estante).llenando == false){
-//                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
-//                            if(App.gama.getEstantes().get(estante).exists(producto)){
-//                                App.gama.getEstantes().get(estante).deleteProducto();
-//                                this.productos.add(producto);
-//                            } else {
-//                                System.out.println("Oh no se acabaron los productos del estante #" + estante);
-//                            }
-//                        }  else {
-//                            System.out.println("Oh no se acabaron los productos del estante #" + estante);
-//                        }
-//                    }
-//                    System.out.println("Se han eliminado " + cantidadDeProductos + " productos de manera exitosa");
-//                }
                 if(cantidadDeProductos > 0 && App.gama.getEstantes().get(estante).getProductos().size() - cantidadDeProductos >= 0){
                     if(cantidadDeProductos == 1){
                         if(App.gama.getEstantes().get(estante).llenando == false){
-                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
-                            if(App.gama.getEstantes().get(estante).exists(producto)){
-                                App.gama.getEstantes().get(estante).deleteProducto();
+                            Iterator<Producto> it = App.gama.getEstantes().get(estante).getProductos().iterator(); 
+                            if(it.hasNext()){
+                                Producto producto = it.next();
+                                App.gama.getEstantes().get(estante).deleteProducto(producto);
                                 this.productos.add(producto);
                             } else {
                                 System.out.println("Oh no se acabaron los productos del estante #" + estante);
@@ -136,9 +119,10 @@ public class Cliente extends Thread {
                         }
                     } else if(cantidadDeProductos == 2) {
                         if(App.gama.getEstantes().get(estante).llenando == false){
-                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
-                            if(App.gama.getEstantes().get(estante).exists(producto)){
-                                App.gama.getEstantes().get(estante).deleteProducto();
+                            Iterator<Producto> it = App.gama.getEstantes().get(estante).getProductos().iterator(); 
+                            if(it.hasNext()){
+                                Producto producto = it.next();
+                                App.gama.getEstantes().get(estante).deleteProducto(producto);
                                 this.productos.add(producto);
                             } else {
                                 System.out.println("Oh no se acabaron los productos del estante #" + estante);
@@ -148,9 +132,10 @@ public class Cliente extends Thread {
                         }
 
                         if(App.gama.getEstantes().get(estante).llenando == false){
-                            Producto producto = App.gama.getEstantes().get(estante).getProducto();
-                            if(App.gama.getEstantes().get(estante).exists(producto)){
-                                App.gama.getEstantes().get(estante).deleteProducto();
+                           Iterator<Producto> it = App.gama.getEstantes().get(estante).getProductos().iterator(); 
+                            if(it.hasNext()){
+                                Producto producto = it.next();
+                                App.gama.getEstantes().get(estante).deleteProducto(producto);
                                 this.productos.add(producto);
                             } else {
                                 System.out.println("Oh no se acabaron los productos del estante #" + estante);
@@ -178,8 +163,9 @@ public class Cliente extends Thread {
                     y otra vez.
                 */
             } else {
-                System.out.println("El cliente #" + this.id + " está acatando órdenes de distanciamiento social mientras se llena estante #" + estante);
-                Thread.sleep(App.duracionDeHora/60*2);
+                while(App.gama.getEstantes().get(estante).llenando == true){
+                }
+                //System.out.println("El cliente #" + this.id + " está acatando órdenes de distanciamiento social mientras se llena estante #" + estante);
                 agarrarProducto(estante);
             }
         } catch (InterruptedException e) {
@@ -189,57 +175,33 @@ public class Cliente extends Thread {
     
     private void pagar() {
         try {
-            //Thread.sleep(500);
+            sCajero.acquire();
             System.out.println("El cliente #" + this.id + " entró en la cola para pagar" );
-            App.clientesEnColaParaPagar.add(this);
-            while(!atendido){
-                Thread.sleep(App.duracionDeHora/60*1);
+            int i = 0;
+            if(productos.size() > 0){
+                Iterator<Mostrador> it = App.gama.mostradores.iterator(); 
+                while(it.hasNext()){
+                    if(it.next().ocupado == false){
+                        App.gama.mostradores.get(i).cliente = this.id;
+                        App.gama.mostradores.get(i).productos = this.productos;
+                        App.gama.mostradores.get(i).ocupado = true;
+                        //System.out.println("El cliente #" + this.id + " pagará en el mostrador #" + i + App.gama.mostradores.get(i).cliente + App.gama.mostradores.get(i).productos.get(0).precio + App.gama.mostradores.get(i).ocupado );
+                        break;
+                    }
+                    i++;
+                }
+                int indexProductos = 0;
+                for(Producto producto : this.productos) {
+                    Thread.sleep( ( ((1/120)/60)*App.duracionDeHora) * 1000 );
+                    System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
+                    indexProductos++;
+                }
+                while(App.gama.mostradores.get(i).ocupado){
+                    //Chequeando Instagram mientras le cobran
+                    Thread.sleep( ( (2/60) *App.duracionDeHora) * 1000 );
+                }
             }
-            int indexProductos = 0;
-            for(Producto producto : this.productos) {
-                Thread.sleep((int) (App.duracionDeHora/60* 0.5));
-                System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
-                indexProductos++;
-            }
-            while(!pago){
-                Thread.sleep(App.duracionDeHora/60*1);
-            }
-//            if(sCajaRegistradora.tryAcquire()){
-//                /*
-//                    0.5 segundos para agarrar algo del carrito y ponerlo en el mostrador para pagarlo
-//                */
-//                int index = 0;
-//                for(Mostrador mostrador : App.mostradores) {
-//                    if(!mostrador.ocupado){
-//                        break;
-//                    }
-//                    index++;
-//                }
-//                
-//                App.mostradores.get(index).cliente = this;
-//                
-//                System.out.println("El cliente #" + this.id + " está pagando sus productos en el mostrador " + index);
-//                
-//                
-//                int indexProductos = 0;
-//                for(Producto producto : this.productos) {
-//                    Thread.sleep(500);
-//                    System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
-//                    indexProductos++;
-//                }     
-//                this.wait();
-//            } else {
-//                App.clientesEnColaParaPagar.add(this);
-//                this.wait();
-//                pagar();
-//            }
-            
-            //sCajaRegistradora.release();
-
-            /*
-                Como es un while infinito, este código se repetirá una 
-                y otra vez.
-            */
+            sCajero.release();
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
         }
@@ -251,15 +213,16 @@ public class Cliente extends Thread {
             /*
                 2 min para regresar carrito a su lugar
             */
-            Thread.sleep(App.duracionDeHora/60*2);
+            Thread.sleep(((2/60) *App.duracionDeHora) * 1000);
             this.sCarrito.release();
             App.carritosDisponibles = this.sCarrito.availablePermits();
             System.out.println("El cliente #" + this.id + " ha regresado su carrito");
             /*
                 Termino ejecución, este cliente no volverá
             */
-            this.termino = true;
+            System.out.println("El cliente #" + this.id + " dice que aún quedan " + (App.nroClientesEnSistema - 1) + " por atender" );
             App.nroClientesEnSistema = App.nroClientesEnSistema - 1;
+            this.termino = true;
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
         }
@@ -285,6 +248,11 @@ public class Cliente extends Thread {
 
     public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
+    }
+    
+      public boolean exists(Cliente cliente) {
+        boolean itemExists = App.clientesEnColaParaPagar.stream().anyMatch(c -> c.equals(cliente));
+        return itemExists;
     }
     
     
