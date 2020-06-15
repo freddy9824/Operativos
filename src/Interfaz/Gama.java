@@ -383,9 +383,9 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
         // TODO add your handling code here:
-        app.setCantCajaRegistradora(app.getCantCajaRegistradora()+1);
-        System.out.println("Se contrato al cajero en la caja numero " + app.getCantCajaRegistradora());
-        String aux = Integer.toString(app.getCantCajaRegistradora());
+        App.cajasRegistradorasIniciales++;
+        System.out.println("Se contrato al cajero en la caja numero " + app.cajasRegistradorasIniciales);
+        String aux = Integer.toString(app.cajasRegistradorasIniciales);
         cajasRegistradoras.setText(aux);
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed
 

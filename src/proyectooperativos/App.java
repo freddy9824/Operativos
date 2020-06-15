@@ -208,7 +208,7 @@ public class App {
                     String auxHours = Integer.toString(horasAbierto);
                     profits.setText(auxProfits);
                     workingHours.setText(auxHours);
-                    String auxCashRegisters = Integer.toString(cantCajaRegistradora);
+                    String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
                     cashRegisters.setText(auxCashRegisters);
                     clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
                     
