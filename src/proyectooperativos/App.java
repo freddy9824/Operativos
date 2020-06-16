@@ -50,7 +50,7 @@ public class App {
     public static volatile boolean iniciar = false;
     public static volatile CopyOnWriteArrayList<Cliente> clientesEnColaParaEntrar;
     public static volatile CopyOnWriteArrayList<Cliente> clientesEnColaParaPagar;
-    public static volatile ArrayList<CajaRegistradora> cajaRegistradora;
+    public static volatile CopyOnWriteArrayList<CajaRegistradora> cajaRegistradora;
     public static volatile CopyOnWriteArrayList<Mostrador> mostradores;
     public static Empleado[] empleados;
     public static Supervisor supervisor;
@@ -113,9 +113,11 @@ public class App {
         
         gama.getMostradores().add(new Mostrador(largo));
 
-        new CajaRegistradora(
+        cajaRegistradora.add(new CajaRegistradora(
             largo         // Su ID
-        ).start();
+        ));
+        
+        cajaRegistradora.get(largo).start();
 
         App.cajasRegistradorasDisponibles = cajasRegistradorasDisponibles + 1;
         
@@ -177,6 +179,7 @@ public class App {
                 nroClientesEnColaParaEntrar = 0;
                 clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
                 clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
+                cajaRegistradora = new CopyOnWriteArrayList<CajaRegistradora>();
                 mostradores = new CopyOnWriteArrayList<Mostrador>();
                 empleados = new Empleado[estantesIniciales];
                 gama = new Mercado();
@@ -217,21 +220,17 @@ public class App {
                 String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                 waitingPeople.setText(auxWait);
 
-                CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
+                //CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
 
                 for (int i = 0; i < cajasRegistradorasIniciales; i++) {
                         gama.getMostradores().add(new Mostrador(i));
-                        cajaRegistradoras[i] = new CajaRegistradora(
-                            i          // Su ID
-                        );
-                        cajaRegistradoras[i].start();
+                        cajaRegistradora.add(new CajaRegistradora(i));
+                        cajaRegistradora.get(i).start();
+//                        cajaRegistradoras[i] = new CajaRegistradora(
+//                            i          // Su ID
+//                        );
+//                        cajaRegistradoras[i].start();
                         
-                }
-                
-                for (int i = 0; i < cajaRegistradoras.length; i++) {
-                    if (aux == true) {
-                        
-                    }
                 }
                 
 
