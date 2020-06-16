@@ -127,6 +127,13 @@ public class App {
     }
     
     public void despedirCajero() {
+        
+        if (aux == true) {
+                 cajaRegistradora.remove(cajaRegistradora.size()-1);
+                 aux = false;
+                 System.out.println("Cajero numero " + cajaRegistradora.size() + "Despedido");
+             }
+        
         /*
             Intentando despedir cajero que más nos cae mal
         */
@@ -232,6 +239,8 @@ public class App {
 //                        cajaRegistradoras[i].start();
                         
                 }
+                
+               
                 
 
                 while (true) {

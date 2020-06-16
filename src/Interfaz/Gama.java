@@ -446,11 +446,11 @@ public class Gama extends javax.swing.JFrame {
 
     private void eliminarCajaRegistradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCajaRegistradoraActionPerformed
         // TODO add your handling code here:
-        if (app.getCantCajaRegistradora() - 1 > 0) {
+        if (App.cajaRegistradora.size() - 1 > 0) {
             App.aux = true;
             app.despedirCajero();
             System.out.println("Se retiro al cajero en la caja numero " + app.getCantCajaRegistradora());
-            String aux = Integer.toString(app.getCantCajaRegistradora());
+            String aux = Integer.toString(App.cajaRegistradora.size());
             cajasRegistradoras.setText(aux);
         }
         else {
