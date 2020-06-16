@@ -6,6 +6,10 @@
 package Interfaz;
 
 import proyectooperativos.App;
+import static proyectooperativos.App.cajaRegistradora;
+import static proyectooperativos.App.gama;
+import proyectooperativos.CajaRegistradora;
+import proyectooperativos.Mostrador;
 
 /**
  *
@@ -401,10 +405,8 @@ public class Gama extends javax.swing.JFrame {
             System.out.println("No podemos contratar otra caja");
         }
         else {
-            app.setCantCajaRegistradora(1);
-            System.out.println("Se contrato al cajero en la caja numero " + (App.cajasRegistradorasDisponibles - 1));
-            String aux = Integer.toString(App.cajasRegistradorasDisponibles);
-            cajasRegistradoras.setText(aux);
+            gama.getMostradores().add(new Mostrador(App.cajaRegistradora.size()));
+            App.cajaRegistradora.add(new CajaRegistradora(App.cajaRegistradora.size()));
         }
         
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed
