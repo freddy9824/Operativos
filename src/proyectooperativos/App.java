@@ -131,8 +131,9 @@ public class App {
         if (aux == true) {
             try{
                  this.sCajero.acquire();
-                 cajaRegistradora.remove(cajaRegistradora.size()-1);
-                 cajasRegistradorasDisponibles = cajasRegistradorasDisponibles - 1;;
+                 CajaRegistradora aux1 = cajaRegistradora.remove(cajaRegistradora.size()-1);
+                 App.gama.getMostradores().remove(aux1.getId());
+                 cajasRegistradorasDisponibles = cajasRegistradorasDisponibles - 1;
                  aux = false;
                  System.out.println("Cajero numero " + cajaRegistradora.size() + "Despedido");
             }catch (InterruptedException e){
