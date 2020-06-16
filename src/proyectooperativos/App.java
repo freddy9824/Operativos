@@ -111,12 +111,10 @@ public class App {
         int largo = cajasRegistradorasDisponibles;
         
         gama.getMostradores().add(new Mostrador(largo));
-        
-        cajaRegistradora.add(cajasRegistradorasDisponibles, new CajaRegistradora(
+
+        new CajaRegistradora(
             largo         // Su ID
-        ));
-        
-        cajaRegistradora.get(largo).start();
+        ).start();
 
         App.cajasRegistradorasDisponibles = cajasRegistradorasDisponibles + 1;
         
