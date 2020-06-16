@@ -449,7 +449,7 @@ public class Gama extends javax.swing.JFrame {
         if (App.cajaRegistradora.size() - 1 > 0) {
             App.aux = true;
             app.despedirCajero();
-            System.out.println("Se retiro al cajero en la caja numero " + app.getCantCajaRegistradora());
+            System.out.println("Se retiro al cajero en la caja numero " + App.cajaRegistradora.size());
             String aux = Integer.toString(App.cajaRegistradora.size());
             cajasRegistradoras.setText(aux);
         }

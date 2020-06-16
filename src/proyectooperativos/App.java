@@ -133,7 +133,6 @@ public class App {
                  this.sCajero.acquire();
                  CajaRegistradora aux1 = cajaRegistradora.remove(cajaRegistradora.size()-1);
                  App.gama.getMostradores().remove(aux1.getId());
-                 cajasRegistradorasDisponibles = cajasRegistradorasDisponibles - 1;
                  aux = false;
                  System.out.println("Cajero numero " + cajaRegistradora.size() + "Despedido");
             }catch (InterruptedException e){
@@ -162,7 +161,6 @@ public class App {
                 */
                 estantesDisponibles = estantesIniciales;
                 carritosDisponibles = carritosIniciales;
-                cajasRegistradorasDisponibles = cajasRegistradorasIniciales;
                 nroClientesEnColaParaEntrar = 0;
                 clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
                 clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
@@ -201,7 +199,7 @@ public class App {
                 String auxHours = Integer.toString(horasAbierto);
                 profits.setText(auxProfits);
                 workingHours.setText(auxHours);
-                String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+                String auxCashRegisters = Integer.toString(App.cajaRegistradora.size());
                 cashRegisters.setText(auxCashRegisters);
                 clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
                 String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
@@ -257,7 +255,7 @@ public class App {
                         auxHours = Integer.toString(horasAbierto);
                         profits.setText(auxProfits);
                         workingHours.setText(auxHours);
-                        auxCashRegisters = Integer.toString(cajasRegistradorasDisponibles);
+                        auxCashRegisters = Integer.toString(App.cajaRegistradora.size());
                         cashRegisters.setText(auxCashRegisters);
                         clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
 
