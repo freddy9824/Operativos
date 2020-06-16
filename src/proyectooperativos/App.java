@@ -40,6 +40,7 @@ public class App {
     public static int nroClientesEnSistema = 0;
     public static int horasAbierto = 0;
     public static int gananciasTotales = 0;
+    public static boolean aux= false;
     public int IdCajero = 0;
     public static volatile Mercado gama;
     javax.swing.JTextField estantes;
@@ -167,119 +168,127 @@ public class App {
              ) {
         
          if(iniciar){
-            /*
-                Agarramos los valores iniciales para poner a funcionar el Mercado
-            */
-             estantesDisponibles = estantesIniciales;
-             carritosDisponibles = carritosIniciales;
-             cajasRegistradorasDisponibles = cajasRegistradorasIniciales;
-             nroClientesEnColaParaEntrar = 0;
-             clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
-             clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
-             mostradores = new CopyOnWriteArrayList<Mostrador>();
-             empleados = new Empleado[estantesIniciales];
-            gama = new Mercado();
+                /*
+                    Agarramos los valores iniciales para poner a funcionar el Mercado
+                */
+                estantesDisponibles = estantesIniciales;
+                carritosDisponibles = carritosIniciales;
+                cajasRegistradorasDisponibles = cajasRegistradorasIniciales;
+                nroClientesEnColaParaEntrar = 0;
+                clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
+                clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
+                mostradores = new CopyOnWriteArrayList<Mostrador>();
+                empleados = new Empleado[estantesIniciales];
+                gama = new Mercado();
             
-            supervisor = new Supervisor();
-            supervisor.start();
+                supervisor = new Supervisor();
+                supervisor.start();
             
             
-            int id = 1;
+                int id = 1;
 
-            //Empleado[] empleados = new Empleado[estantesIniciales];
+                //Empleado[] empleados = new Empleado[estantesIniciales];
 
-            for (int i = 0; i < estantesIniciales; i++) {
+                for (int i = 0; i < estantesIniciales; i++) {
 
-                gama.getEstantes().add(new Estante(i));
-                String auxShelves = Integer.toString(gama.getEstantes().size());
-                shelves.setText(auxShelves);
-                empleados[i] = new Empleado(
+                    gama.getEstantes().add(new Estante(i));
+                    String auxShelves = Integer.toString(gama.getEstantes().size());
+                    shelves.setText(auxShelves);
+                    empleados[i] = new Empleado(
                     i          // Su ID
-                );
+                    );
 
                 /*
                     Al hacer clientes[i].start() comenzamos a correr el hilo.
                     Esto genera muchas confusiones porque la función que definimos
                     en Cliente se llama run() pero bueno, es lo que hay, ¿no?
                 */
-                empleados[i].start();
-            }
-            String auxCart = Integer.toString(carritosDisponibles);
-            shoppingCart.setText(auxCart);
-            String auxProfits = Integer.toString(gananciasTotales);
-            String auxHours = Integer.toString(horasAbierto);
-            profits.setText(auxProfits);
-            workingHours.setText(auxHours);
-            String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
-            cashRegisters.setText(auxCashRegisters);
-            clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
-            String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
-            waitingPeople.setText(auxWait);
-            
-            CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
-            
-            for (int i = 0; i < cajasRegistradorasIniciales; i++) {
-                gama.getMostradores().add(new Mostrador(i));
-                cajaRegistradoras[i] = new CajaRegistradora(
-                    i          // Su ID
-                );
-                cajaRegistradoras[i].start();
-            }
-            
-            while (true) {
-                try {
-                    /*
-                        El cliente llega y toma inmediatamente un carrito disponible
-                    */
-                    if(sCarrito.tryAcquire()){
-                        nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
-                        nroClientesEnSistema = nroClientesEnSistema + 1;
-                        //System.out.println("Adquiriendo Carrito el cliente #" + id);
-                        App.carritosDisponibles = sCarrito.availablePermits();
-                        //Thread.sleep(duracionDeHora/60*2);
-                        if(App.clientesEnColaParaEntrar.size() > 0) {
-                            System.out.println("Adquiriendo Carrito el cliente #" + (id - 1) + " quedan " + App.carritosDisponibles + " carritos disponibles");
-                            App.clientesEnColaParaEntrar.remove(0).start();
-                        } else {
-                            System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
-                            Cliente cliente = new Cliente(
-                            id, this.sCarrito, this.sEstante, this.sCajero);
-                            id++;
-                            cliente.start();
-                        }
-                        auxWait = Integer.toString(nroClientesEnColaParaEntrar);
-                        waitingPeople.setText(auxWait);
-                    }else{
-                        /*
-                            Un cliente entra cada X tiempo
-                        */
-                        Thread.sleep( ( (5/60)*App.duracionDeHora) * 1000 );
-                        nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
-                        //System.out.println("El cliente #" + id + " está esperando a ser atendido");
-                        App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajero));
-                        id++;
-                        auxWait = Integer.toString(nroClientesEnColaParaEntrar);
-                        waitingPeople.setText(auxWait);
-                    };
-                    auxCart = Integer.toString(carritosDisponibles);
-                    shoppingCart.setText(auxCart);
-                    auxProfits = Integer.toString(gananciasTotales);
-                    auxHours = Integer.toString(horasAbierto);
-                    profits.setText(auxProfits);
-                    workingHours.setText(auxHours);
-                    auxCashRegisters = Integer.toString(cajasRegistradorasDisponibles);
-                    cashRegisters.setText(auxCashRegisters);
-                    clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
-                    
-                }catch(InterruptedException e) {
-                    System.out.println("Error");
+                    empleados[i].start();
                 }
-            }
-         }
-         
-        
-        
-    }  
+                String auxCart = Integer.toString(carritosDisponibles);
+                shoppingCart.setText(auxCart);
+                String auxProfits = Integer.toString(gananciasTotales);
+                String auxHours = Integer.toString(horasAbierto);
+                profits.setText(auxProfits);
+                workingHours.setText(auxHours);
+                String auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+                cashRegisters.setText(auxCashRegisters);
+                clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
+                String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                waitingPeople.setText(auxWait);
+
+                CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
+
+                for (int i = 0; i < cajasRegistradorasIniciales; i++) {
+                        gama.getMostradores().add(new Mostrador(i));
+                        cajaRegistradoras[i] = new CajaRegistradora(
+                            i          // Su ID
+                        );
+                        cajaRegistradoras[i].start();
+                        
+                }
+                
+                for (int i = 0; i < cajaRegistradoras.length; i++) {
+                    if (aux == true) {
+                        
+                    }
+                }
+                
+
+                while (true) {
+                    try {
+                        /*
+                            El cliente llega y toma inmediatamente un carrito disponible
+                        */
+                        if(sCarrito.tryAcquire()){
+                            nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
+                            nroClientesEnSistema = nroClientesEnSistema + 1;
+                            //System.out.println("Adquiriendo Carrito el cliente #" + id);
+                            App.carritosDisponibles = sCarrito.availablePermits();
+                            //Thread.sleep(duracionDeHora/60*2);
+                            if(App.clientesEnColaParaEntrar.size() > 0) {
+                                System.out.println("Adquiriendo Carrito el cliente #" + (id - 1) + " quedan " + App.carritosDisponibles + " carritos disponibles");
+                                App.clientesEnColaParaEntrar.remove(0).start();
+                            } else {
+                                    System.out.println("Adquiriendo Carrito el cliente #" + id + " quedan " + App.carritosDisponibles + " carritos disponibles");
+                                    Cliente cliente = new Cliente(
+                                    id, this.sCarrito, this.sEstante, this.sCajero);
+                                    id++;
+                                    cliente.start();
+                            }
+                            auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                            waitingPeople.setText(auxWait);
+                        }else{
+                            /*
+                                Un cliente entra cada X tiempo
+                            */
+                            Thread.sleep( ( (5/60)*App.duracionDeHora) * 1000 );
+                            nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
+                            //System.out.println("El cliente #" + id + " está esperando a ser atendido");
+                            App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajero));
+                            id++;
+                            auxWait = Integer.toString(nroClientesEnColaParaEntrar);
+                            waitingPeople.setText(auxWait);
+                        };
+                        auxCart = Integer.toString(carritosDisponibles);
+                        shoppingCart.setText(auxCart);
+                        auxProfits = Integer.toString(gananciasTotales);
+                        auxHours = Integer.toString(horasAbierto);
+                        profits.setText(auxProfits);
+                        workingHours.setText(auxHours);
+                        auxCashRegisters = Integer.toString(cajasRegistradorasDisponibles);
+                        cashRegisters.setText(auxCashRegisters);
+                        clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
+
+                    }catch(InterruptedException e) {
+                        System.out.println("Error");
+                    }
+                }
+             }
+
+
+
+        }  
      
      public void LeerArchivo(){
         String aux;
