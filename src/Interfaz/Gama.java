@@ -407,6 +407,7 @@ public class Gama extends javax.swing.JFrame {
         else {
             gama.getMostradores().add(new Mostrador(App.cajaRegistradora.size()));
             App.cajaRegistradora.add(new CajaRegistradora(App.cajaRegistradora.size()));
+            app.setCantCajaRegistradora(1);
         }
         
     }//GEN-LAST:event_agregarCajaAdministradoraActionPerformed

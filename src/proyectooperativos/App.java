@@ -109,21 +109,21 @@ public class App {
     }
 
     public void setCantCajaRegistradora(int cantCajRegistradora) {
-        int largo = cajasRegistradorasDisponibles;
-        
-        gama.getMostradores().add(new Mostrador(largo));
-
-        cajaRegistradora.add(new CajaRegistradora(
-            largo         // Su ID
-        ));
-        
-        cajaRegistradora.get(largo).start();
-
-        App.cajasRegistradorasDisponibles = cajasRegistradorasDisponibles + 1;
+//        int largo = cajasRegistradorasDisponibles;
+//        
+//        gama.getMostradores().add(new Mostrador(largo));
+//
+//        cajaRegistradora.add(new CajaRegistradora(
+//            largo         // Su ID
+//        ));
+//        
+//        cajaRegistradora.get(largo).start();
+//
+//        App.cajasRegistradorasDisponibles = cajasRegistradorasDisponibles + 1;
         
         this.sCajero.release(1);
         
-        System.out.println("Has contratado al cajero #" + largo + " y es feliz porque trabaja");
+        System.out.println("Has contratado al cajero #" + cajasRegistradorasDisponibles + " y es feliz porque trabaja");
     }
     
     public void despedirCajero() {
