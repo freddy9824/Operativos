@@ -29,7 +29,7 @@ public class App {
     public static int estantesDisponibles = 1;
     public static int cajasRegistradorasDisponibles = 1;
     public static int maxCantidadDeProductosPorEstantes = 10;
-    public static int duracionDeHora;
+    public static int duracionDeHora = 1000;
     public static int cajasRegistradorasIniciales;
     public static int maxCantidadDeCajasRegistradoras;
     public static int carritosIniciales = 1;
@@ -261,7 +261,7 @@ public class App {
                             /*
                                 Un cliente entra cada X tiempo
                             */
-                            Thread.sleep( ( (5/60)*App.duracionDeHora) * 1000 );
+                            Thread.sleep( (long) ( ( (5f/60f)*App.duracionDeHora) * 1000 ) );
                             nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
                             //System.out.println("El cliente #" + id + " está esperando a ser atendido");
                             App.clientesEnColaParaEntrar.add(new Cliente(id, this.sCarrito, this.sEstante, this.sCajero));

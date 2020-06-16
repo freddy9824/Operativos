@@ -81,7 +81,7 @@ public class Cliente extends Thread {
             /*
                 5 min para recorrer un estante
             */
-            Thread.sleep( ( (5/60) *App.duracionDeHora) * 1000 );
+            Thread.sleep( (long) ( ( (5f/60f) *App.duracionDeHora) * 1000 ) );
 
         } catch (InterruptedException e) {
             System.out.println("El cliente no pudo recorrer estante.");
@@ -97,7 +97,7 @@ public class Cliente extends Thread {
                 /*
                     1 min para agarrar algo del estante
                 */
-                Thread.sleep( ( (1/60) *App.duracionDeHora) * 1000 );
+                Thread.sleep( (long) ( ( (1f/60f) *App.duracionDeHora) * 1000 ) );
 
                 /*
                     Un cliente solo agarra entre 0 a 2 productos
@@ -192,13 +192,13 @@ public class Cliente extends Thread {
                 }
                 int indexProductos = 0;
                 for(Producto producto : this.productos) {
-                    Thread.sleep( ( ((1/120)/60)*App.duracionDeHora) * 1000 );
+                    Thread.sleep( (long) ( ( ((1f/120f)/60f)*App.duracionDeHora) * 1000) );
                     System.out.println("El cliente #" + this.id + " colocó en el mostrador su producto #" + (indexProductos + 1) );
                     indexProductos++;
                 }
                 while(App.gama.mostradores.get(i).ocupado){
                     //Chequeando Instagram mientras le cobran
-                    Thread.sleep( ( (2/60) *App.duracionDeHora) * 1000 );
+                    Thread.sleep( (long) ( ( (2f/60f) *App.duracionDeHora) * 1000 ) );
                 }
             }
             sCajero.release();
@@ -213,7 +213,7 @@ public class Cliente extends Thread {
             /*
                 2 min para regresar carrito a su lugar
             */
-            Thread.sleep(((2/60) *App.duracionDeHora) * 1000);
+            Thread.sleep( (long) ( ((2f/60f) *App.duracionDeHora) * 1000) );
             this.sCarrito.release();
             App.carritosDisponibles = this.sCarrito.availablePermits();
             System.out.println("El cliente #" + this.id + " ha regresado su carrito");
