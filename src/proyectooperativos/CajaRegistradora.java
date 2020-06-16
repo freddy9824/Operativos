@@ -17,6 +17,7 @@ public class CajaRegistradora extends Thread{
     private int producto;
     private int varGlobal;
     private int tiempo;
+    public volatile boolean despedido = false;
     
     public CajaRegistradora(int id){
         this.id = id;
@@ -42,14 +43,14 @@ public class CajaRegistradora extends Thread{
     
     @Override
     public void run() {
-        while(true){
+        while(!despedido){
             atender();
         }
     }
     
     private void atender() {
         try {
-            if(App.gama.mostradores.get(this.id).ocupado == true){
+            if(App.gama.mostradores.get(this.id).ocupado == true && !this.despedido){
                 App.gama.mostradores.get(this.id).ocupado = true;
                        int ganancias = 0;
                        int idCliente = App.gama.mostradores.get(this.id).cliente;

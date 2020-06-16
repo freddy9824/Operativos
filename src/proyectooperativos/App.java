@@ -9,8 +9,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Semaphore;
+import java.util.Iterator;
 import javax.swing.JOptionPane;
 import javax.*;
 
@@ -25,6 +27,7 @@ public class App {
     public static int maxCantidadDeEstantes;
     public static int estantesIniciales = 1;
     public static int estantesDisponibles = 1;
+    public static int cajasRegistradorasDisponibles = 1;
     public static int maxCantidadDeProductosPorEstantes = 10;
     public static int duracionDeHora;
     public static int cajasRegistradorasIniciales;
@@ -37,6 +40,7 @@ public class App {
     public static int nroClientesEnSistema = 0;
     public static int horasAbierto = 0;
     public static int gananciasTotales = 0;
+    public int IdCajero = 0;
     public static volatile Mercado gama;
     javax.swing.JTextField estantes;
     javax.swing.JTextField cajeros;
@@ -100,11 +104,54 @@ public class App {
     }
 
     public int getCantCajaRegistradora() {
-        return 0;
+        return cajasRegistradorasDisponibles;
     }
 
     public void setCantCajaRegistradora(int cantCajRegistradora) {
-        //this.cantCajaRegistradora = cantCajRegistradora;
+        int largo = cajasRegistradorasDisponibles;
+        
+        gama.getMostradores().add(new Mostrador(largo));
+        
+        cajaRegistradora.add(cajasRegistradorasDisponibles, new CajaRegistradora(
+            largo         // Su ID
+        ));
+        
+        cajaRegistradora.get(largo).start();
+
+        App.cajasRegistradorasDisponibles = cajasRegistradorasDisponibles + 1;
+        
+        this.sCajero.release(1);
+        
+        System.out.println("Has contratado al cajero #" + largo + " y es feliz porque trabaja");
+    }
+    
+    public void despedirCajero() {
+        /*
+            Intentando despedir cajero que más nos cae mal
+        */
+//        try{
+//            sCajero.acquire();
+//            System.out.println("intenté");
+//            int largo = cajasRegistradorasDisponibles;
+//            
+//            //Esto se hace en el cajero, ya que no se puede saber con exactitud cuando es promovido cliente, el señor del cajero
+//            //gama.getMostradores().remove(this.IdCajero);
+//            Iterator<Mostrador> it = App.gama.getMostradores().iterator();
+//            boolean encontrado = false;
+//            
+//            int i = 0;
+//            while(it.hasNext()){
+//                if(it.next().ocupado == false){
+//                    break;
+//                }
+//                i++;
+//            }
+//            //App.gama.getMostradores().remove(i);
+//            cajaRegistradora.get(i).despedido = true;
+//            System.out.println("Has despedido al cajero #" + i + " y ahora está triste");
+//        } catch (InterruptedException e){
+//            System.out.println("Error");
+//        }
     }
 
     
@@ -127,6 +174,7 @@ public class App {
             */
              estantesDisponibles = estantesIniciales;
              carritosDisponibles = carritosIniciales;
+             cajasRegistradorasDisponibles = cajasRegistradorasIniciales;
              nroClientesEnColaParaEntrar = 0;
              clientesEnColaParaEntrar = new CopyOnWriteArrayList<Cliente>();
              clientesEnColaParaPagar = new CopyOnWriteArrayList<Cliente>();
@@ -221,7 +269,7 @@ public class App {
                     auxHours = Integer.toString(horasAbierto);
                     profits.setText(auxProfits);
                     workingHours.setText(auxHours);
-                    auxCashRegisters = Integer.toString(cajasRegistradorasIniciales);
+                    auxCashRegisters = Integer.toString(cajasRegistradorasDisponibles);
                     cashRegisters.setText(auxCashRegisters);
                     clientInSist.setText( Integer.toString( nroClientesEnSistema ) );
                     

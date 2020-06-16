@@ -397,13 +397,13 @@ public class Gama extends javax.swing.JFrame {
 
     private void agregarCajaAdministradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarCajaAdministradoraActionPerformed
         // TODO add your handling code here:
-        if (App.cajasRegistradorasIniciales+1 > App.maxCantidadDeCajasRegistradoras) {
+        if (App.cajasRegistradorasDisponibles+1 > App.maxCantidadDeCajasRegistradoras) {
             System.out.println("No podemos contratar otra caja");
         }
         else {
-            App.cajasRegistradorasIniciales = App.cajasRegistradorasIniciales+1;
-            System.out.println("Se contrato al cajero en la caja numero " + App.cajasRegistradorasIniciales);
-            String aux = Integer.toString(App.cajasRegistradorasIniciales);
+            app.setCantCajaRegistradora(1);
+            System.out.println("Se contrato al cajero en la caja numero " + (App.cajasRegistradorasDisponibles - 1));
+            String aux = Integer.toString(App.cajasRegistradorasDisponibles);
             cajasRegistradoras.setText(aux);
         }
         
@@ -446,8 +446,8 @@ public class Gama extends javax.swing.JFrame {
 
     private void eliminarCajaRegistradoraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarCajaRegistradoraActionPerformed
         // TODO add your handling code here:
-        if (app.getCantCajaRegistradora()-1 > 0) {
-            app.setCantCajaRegistradora(app.getCantCajaRegistradora()-1);
+        if (app.getCantCajaRegistradora() - 1 > 0) {
+            app.despedirCajero();
             System.out.println("Se retiro al cajero en la caja numero " + app.getCantCajaRegistradora());
             String aux = Integer.toString(app.getCantCajaRegistradora());
             cajasRegistradoras.setText(aux);
