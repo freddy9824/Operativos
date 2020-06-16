@@ -36,8 +36,7 @@ public class Cliente extends Thread {
         
         /*
             ¡¡Importantísimo!! Debemos pasarle al cliente el semáforo de alguna
-            manera para que pueda llamarlo. Si creamos un nuevo semáforo aquí
-            adentro, ese semáforo será otro diferente del que creamos en App.
+            manera para que pueda llamarlo.
         */
         this.sCarrito = sCarrito;
         this.sEstante = sEstante;
@@ -245,15 +244,5 @@ public class Cliente extends Thread {
             System.out.println("El cliente no pudo tomar carrito.");
         }
     }
-
-    public void setTiempo(int tiempo) {
-        this.tiempo = tiempo;
-    }
-    
-      public boolean exists(Cliente cliente) {
-        boolean itemExists = App.clientesEnColaParaPagar.stream().anyMatch(c -> c.equals(cliente));
-        return itemExists;
-    }
-    
     
 }

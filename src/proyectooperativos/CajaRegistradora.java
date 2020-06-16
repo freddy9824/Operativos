@@ -57,10 +57,15 @@ public class CajaRegistradora extends Thread{
                        System.out.println("El cajero #" + this.id + " está atendiendo a cliente #" + idCliente );
                        for(int i = 0; i < App.gama.mostradores.get(this.id).productos.size(); i++){
                                 System.out.println("El cajero #" + this.id + " pasó el producto #" + App.gama.mostradores.get(this.id).productos.get(i).getId() + " del cliente #" + idCliente );
+                                /*
+                                    Un cajero factura un producto cada min
+                                */
                                 Thread.sleep( (long) ( ( (1f/60f) *App.duracionDeHora) * 1000 ) );
                                 ganancias = ganancias + App.gama.mostradores.get(this.id).productos.get(i).getPrecio();
                        }
-                       
+                       /*
+                             Un cajero tarda 0.5 min en marcar las ganancias generadas
+                        */
                       Thread.sleep( (long) ( ( ((1f/2f)/60f) *App.duracionDeHora) ) * 1000 ); //0.5 min;
                        System.out.println("Agregadas " + ganancias + " a las ganancias totales");
                        App.gananciasTotales = App.gananciasTotales + ganancias;

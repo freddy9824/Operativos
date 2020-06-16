@@ -129,37 +129,16 @@ public class App {
     public void despedirCajero() {
         
         if (aux == true) {
+            try{
+                 this.sCajero.acquire();
                  cajaRegistradora.remove(cajaRegistradora.size()-1);
+                 cajasRegistradorasDisponibles = cajasRegistradorasDisponibles - 1;;
                  aux = false;
                  System.out.println("Cajero numero " + cajaRegistradora.size() + "Despedido");
-             }
-        
-        /*
-            Intentando despedir cajero que más nos cae mal
-        */
-//        try{
-//            sCajero.acquire();
-//            System.out.println("intenté");
-//            int largo = cajasRegistradorasDisponibles;
-//            
-//            //Esto se hace en el cajero, ya que no se puede saber con exactitud cuando es promovido cliente, el señor del cajero
-//            //gama.getMostradores().remove(this.IdCajero);
-//            Iterator<Mostrador> it = App.gama.getMostradores().iterator();
-//            boolean encontrado = false;
-//            
-//            int i = 0;
-//            while(it.hasNext()){
-//                if(it.next().ocupado == false){
-//                    break;
-//                }
-//                i++;
-//            }
-//            //App.gama.getMostradores().remove(i);
-//            cajaRegistradora.get(i).despedido = true;
-//            System.out.println("Has despedido al cajero #" + i + " y ahora está triste");
-//        } catch (InterruptedException e){
-//            System.out.println("Error");
-//        }
+            }catch (InterruptedException e){
+                System.out.println("Error");
+            }
+        }
     }
 
     
@@ -227,17 +206,10 @@ public class App {
                 String auxWait = Integer.toString(nroClientesEnColaParaEntrar);
                 waitingPeople.setText(auxWait);
 
-                //CajaRegistradora[] cajaRegistradoras = new CajaRegistradora[cajasRegistradorasIniciales];
-
                 for (int i = 0; i < cajasRegistradorasIniciales; i++) {
                         gama.getMostradores().add(new Mostrador(i));
                         cajaRegistradora.add(new CajaRegistradora(i));
                         cajaRegistradora.get(i).start();
-//                        cajaRegistradoras[i] = new CajaRegistradora(
-//                            i          // Su ID
-//                        );
-//                        cajaRegistradoras[i].start();
-                        
                 }
                 
                
@@ -268,7 +240,7 @@ public class App {
                             waitingPeople.setText(auxWait);
                         }else{
                             /*
-                                Un cliente entra cada X tiempo
+                                Un cliente entra cada 5 min
                             */
                             Thread.sleep( (long) ( ( (5f/60f)*App.duracionDeHora) * 1000 ) );
                             nroClientesEnColaParaEntrar = App.clientesEnColaParaEntrar.size();
@@ -302,6 +274,9 @@ public class App {
         String aux;
         String[] arrayAux;
         try{
+            /*
+                Se lee línea por línea archivoConfig.txt y se extraen las respectivas variables
+            */
             BufferedReader bf = new BufferedReader(new FileReader(archivoConfig));           
             aux = bf.readLine();
             arrayAux = aux.split(":");
